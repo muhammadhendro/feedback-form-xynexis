@@ -153,7 +153,7 @@ export default function FeedbackForm() {
 
     return (
         <div className="w-full px-0 pt-24 md:p-8 md:pt-28" ref={wrapperRef}>
-            <div className="max-w-4xl w-full mx-auto">
+            <div className="w-full md:max-w-4xl md:mx-auto">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-xynexis-green/5 rounded-full blur-3xl"></div>
