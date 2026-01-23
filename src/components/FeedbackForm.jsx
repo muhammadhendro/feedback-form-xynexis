@@ -143,6 +143,19 @@ export default function FeedbackForm() {
         setLoading(true);
         setMessage(null);
 
+        // Rate Limiting (Client-side)
+        const lastSubmission = localStorage.getItem('last_feedback_submission');
+        if (lastSubmission) {
+            const timeSince = Date.now() - parseInt(lastSubmission, 10);
+            const COOLDOWN = 60000; // 60 seconds
+            if (timeSince < COOLDOWN) {
+                const remainingSeconds = Math.ceil((COOLDOWN - timeSince) / 1000);
+                setMessage({ type: 'error', text: `Please wait ${remainingSeconds} seconds before submitting again.` });
+                setLoading(false);
+                return;
+            }
+        }
+
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length > 0) {
             // Pick the first error to display
@@ -163,6 +176,9 @@ export default function FeedbackForm() {
                 }]);
 
             if (error) throw error;
+
+            // Update rate limit timestamp
+            localStorage.setItem('last_feedback_submission', Date.now().toString());
 
             setMessage({ type: 'success', text: '✨ Thank you! Your feedback has been submitted successfully.' });
             setFormData({
