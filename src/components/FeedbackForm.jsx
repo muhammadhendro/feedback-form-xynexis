@@ -74,6 +74,7 @@ export default function FeedbackForm() {
     const [focusedField, setFocusedField] = useState(null);
 
     // Auto-resize iframe logic
+    const wrapperRef = useRef(null);
     useEffect(() => {
         const sendHeight = () => {
             // Comprehensive height calculation to ensure we capture full content
