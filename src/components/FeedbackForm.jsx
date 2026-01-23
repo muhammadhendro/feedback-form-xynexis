@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../utils/supabaseClient';
 
 const InputField = ({ label, name, type = 'text', required = false, value, onChange, isFocused, onFocus, onBlur }) => (
@@ -164,7 +164,7 @@ export default function FeedbackForm() {
     const yesNoOptions = ['Yes', 'No'];
 
     return (
-        <div className="w-full p-4 md:p-8">
+        <div className="w-full p-4 md:p-8" ref={wrapperRef}>
             <div className="max-w-4xl w-full mx-auto">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
