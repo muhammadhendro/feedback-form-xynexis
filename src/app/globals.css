@@ -43,8 +43,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Prevent double scroll in iframe */
-  min-height: auto;
-  overflow: hidden;
+  /* Prevent double scroll in iframe but allow growth */
+  min-height: 100%;
+  height: auto;
+  overflow-y: visible;
   margin: 0;
 }
 

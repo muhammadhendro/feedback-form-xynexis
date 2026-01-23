@@ -123,15 +123,15 @@ export default function FeedbackForm() {
     const yesNoOptions = ['Yes', 'No'];
 
     return (
-        <div className="w-full min-h-screen flex items-center justify-center p-4 md:p-8">
-            <div className="max-w-4xl w-full">
+        <div className="w-full p-4 md:p-8">
+            <div className="max-w-4xl w-full mx-auto">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-xynexis-green/5 rounded-full blur-3xl"></div>
                     <div className="absolute bottom-20 right-10 w-96 h-96 bg-xynexis-green/5 rounded-full blur-3xl"></div>
                 </div>
 
-                <div className="relative bg-xynexis-gray/80 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-700/50 animate-fade-in-up">
+                <div className="relative bg-xynexis-gray/80 backdrop-blur-sm px-8 pb-8 pt-2 md:px-12 md:pb-12 md:pt-4 rounded-2xl shadow-2xl border border-gray-700/50 animate-fade-in-up">
                     {/* Header */}
                     <div className="text-center mb-10 pb-8 border-b border-gray-700/50">
                         {/* Logo */}
