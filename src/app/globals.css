@@ -36,18 +36,20 @@
   --foreground: #ffffff;
 }
 
+html,
 body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
   background: linear-gradient(135deg, #1a1e28 0%, #20242F 50%, #1a1e28 100%);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent double scroll in iframe */
   /* Prevent double scroll in iframe strictly */
   min-height: auto;
   height: auto;
   overflow: hidden !important;
-  margin: 0;
 }
 
 /* Animations */
