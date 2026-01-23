@@ -43,10 +43,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Prevent double scroll in iframe */
-  /* Prevent double scroll in iframe but allow growth */
-  min-height: 100%;
+  /* Prevent double scroll in iframe strictly */
+  min-height: auto;
   height: auto;
-  overflow-y: visible;
+  overflow: hidden !important;
   margin: 0;
 }
 
