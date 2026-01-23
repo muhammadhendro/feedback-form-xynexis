@@ -160,7 +160,7 @@ export default function FeedbackForm() {
                     <div className="absolute bottom-20 right-10 w-96 h-96 bg-xynexis-green/5 rounded-full blur-3xl"></div>
                 </div>
 
-                <div className="relative bg-xynexis-gray/80 backdrop-blur-sm px-3 pb-6 pt-4 md:px-12 md:pb-12 md:pt-6 rounded-2xl shadow-2xl border border-gray-700/50 animate-fade-in-up">
+                <div className="relative bg-xynexis-gray/80 backdrop-blur-sm px-4 pb-6 pt-4 md:px-12 md:pb-12 md:pt-6 md:rounded-2xl md:shadow-2xl md:border border-gray-700/50 animate-fade-in-up">
                     {/* Header */}
                     <div className="text-center mb-10 pb-8 border-b border-gray-700/50">
                         {/* Logo */}
