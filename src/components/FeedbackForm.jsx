@@ -72,6 +72,48 @@ export default function FeedbackForm() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [focusedField, setFocusedField] = useState(null);
+    const formContainerRef = useRef(null); // Ref for the main container
+
+    // Auto-resize iframe logic
+    useEffect(() => {
+        const sendHeight = () => {
+            // Comprehensive height calculation to ensure we capture full content
+            const body = document.body;
+            const html = document.documentElement;
+
+            const height = Math.max(
+                body.scrollHeight,
+                body.offsetHeight,
+                html.clientHeight,
+                html.scrollHeight,
+                html.offsetHeight
+            );
+
+            // Add significant buffer to ensure no cutoff (especially for shadows/decorations)
+            window.parent.postMessage({ frameHeight: height + 50 }, '*');
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            sendHeight();
+        });
+
+        // Observe both body and document element
+        resizeObserver.observe(document.body);
+        resizeObserver.observe(document.documentElement);
+
+        // Periodic check to catch any layout shifts or animations
+        const intervalId = setInterval(sendHeight, 500);
+
+        // Initial send
+        sendHeight();
+
+        // Cleanup
+        return () => {
+            resizeObserver.disconnect();
+            clearInterval(intervalId);
+        };
+    }, []);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
