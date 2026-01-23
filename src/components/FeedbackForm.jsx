@@ -110,13 +110,44 @@ export default function FeedbackForm() {
         }));
     };
 
+    const validateForm = () => {
+        const errors = {};
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const nameRegex = /^[a-zA-Z\s\.\-\']+$/;
+
+        if (!formData.full_name) {
+            errors.full_name = 'Full name is required';
+        } else if (formData.full_name.length < 2) {
+            errors.full_name = 'Name is too short';
+        } else if (!nameRegex.test(formData.full_name)) {
+            errors.full_name = 'Name contains invalid characters';
+        }
+
+        if (!formData.company_name) {
+            errors.company_name = 'Company name is required';
+        } else if (formData.company_name.length < 2) {
+            errors.company_name = 'Company name is too short';
+        }
+
+        if (!formData.email) {
+            errors.email = 'Email is required';
+        } else if (!emailRegex.test(formData.email)) {
+            errors.email = 'Invalid email address';
+        }
+
+        return errors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage(null);
 
-        if (!formData.full_name || !formData.company_name || !formData.email) {
-            setMessage({ type: 'error', text: 'Please fill in all required fields.' });
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            // Pick the first error to display
+            const firstError = Object.values(validationErrors)[0];
+            setMessage({ type: 'error', text: firstError });
             setLoading(false);
             return;
         }
@@ -124,7 +155,12 @@ export default function FeedbackForm() {
         try {
             const { error } = await supabase
                 .from('feedback_submissions')
-                .insert([formData]);
+                .insert([{
+                    ...formData,
+                    full_name: formData.full_name.trim(),
+                    company_name: formData.company_name.trim(),
+                    email: formData.email.trim().toLowerCase()
+                }]);
 
             if (error) throw error;
 
