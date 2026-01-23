@@ -152,7 +152,7 @@ export default function FeedbackForm() {
     const yesNoOptions = ['Yes', 'No'];
 
     return (
-        <div className="w-full px-0 pt-24 md:p-8 md:pt-28" ref={wrapperRef}>
+        <div className="w-full px-0 pt-24 md:p-8 md:pt-28 border-2 border-red-500" ref={wrapperRef}>
             <div className="w-full md:max-w-4xl md:mx-auto">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
