@@ -72,7 +72,6 @@ export default function FeedbackForm() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [focusedField, setFocusedField] = useState(null);
-    const formContainerRef = useRef(null); // Ref for the main container
 
     // Auto-resize iframe logic
     useEffect(() => {
