@@ -106,7 +106,8 @@ export default function FeedbackForm() {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
                     }
                 });
                 
@@ -187,7 +188,8 @@ export default function FeedbackForm() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/submit-feedback`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
                 },
                 body: JSON.stringify({
                     token: csrfToken,
@@ -228,7 +230,10 @@ export default function FeedbackForm() {
             // Fetch new token for next submission
             const tokenResponse = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
+                }
             });
             if (tokenResponse.ok) {
                 const tokenData = await tokenResponse.json();
