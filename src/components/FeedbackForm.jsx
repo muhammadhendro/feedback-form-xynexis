@@ -63,8 +63,6 @@ export default function FeedbackForm() {
         email: '',
         satisfaction_overall: '',
         material_usefulness: '',
-        speaker_interest: '',
-        attend_again: '',
         recommend_colleagues: '',
         comments: ''
     });
@@ -187,8 +185,6 @@ export default function FeedbackForm() {
                 email: '',
                 satisfaction_overall: '',
                 material_usefulness: '',
-                speaker_interest: '',
-                attend_again: '',
                 recommend_colleagues: '',
                 comments: ''
             });
@@ -329,31 +325,7 @@ export default function FeedbackForm() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <SelectGroup
-                                    label="How interesting are the speakers at the Webinar Series?"
-                                    name="speaker_interest"
-                                    options={scaleOptions}
-                                    required
-                                    value={formData.speaker_interest}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'speaker_interest'}
-                                    onFocus={() => setFocusedField('speaker_interest')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
 
-                                <SelectGroup
-                                    label="Would you like to attend the Webinar Series again next year?"
-                                    name="attend_again"
-                                    options={yesNoOptions}
-                                    required
-                                    value={formData.attend_again}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'attend_again'}
-                                    onFocus={() => setFocusedField('attend_again')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-                            </div>
 
                             <SelectGroup
                                 label="Would you like to recommend the Webinar Series to your colleagues?"
