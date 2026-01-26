@@ -70,6 +70,7 @@ export default function FeedbackForm() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [focusedField, setFocusedField] = useState(null);
+    const [csrfToken, setCsrfToken] = useState(null);
 
     // Auto-resize iframe logic
     const wrapperRef = useRef(null);
@@ -96,6 +97,31 @@ export default function FeedbackForm() {
             resizeObserver.disconnect();
             clearInterval(intervalId);
         };
+    }, []);
+
+    // Fetch CSRF token on mount
+    useEffect(() => {
+        const fetchToken = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    setCsrfToken(data.token);
+                } else {
+                    console.error('Failed to fetch token');
+                }
+            } catch (error) {
+                console.error('Error fetching token:', error);
+            }
+        };
+        
+        fetchToken();
     }, []);
 
 
@@ -141,22 +167,15 @@ export default function FeedbackForm() {
         setLoading(true);
         setMessage(null);
 
-        // Rate Limiting (Client-side)
-        const lastSubmission = localStorage.getItem('last_feedback_submission');
-        if (lastSubmission) {
-            const timeSince = Date.now() - parseInt(lastSubmission, 10);
-            const COOLDOWN = 60000; // 60 seconds
-            if (timeSince < COOLDOWN) {
-                const remainingSeconds = Math.ceil((COOLDOWN - timeSince) / 1000);
-                setMessage({ type: 'error', text: `Please wait ${remainingSeconds} seconds before submitting again.` });
-                setLoading(false);
-                return;
-            }
+        // Check if token is ready
+        if (!csrfToken) {
+            setMessage({ type: 'error', text: 'Security token not ready. Please refresh the page.' });
+            setLoading(false);
+            return;
         }
 
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length > 0) {
-            // Pick the first error to display
             const firstError = Object.values(validationErrors)[0];
             setMessage({ type: 'error', text: firstError });
             setLoading(false);
@@ -164,20 +183,37 @@ export default function FeedbackForm() {
         }
 
         try {
-            const { error } = await supabase
-                .from('feedback_submissions')
-                .insert([{
-                    ...formData,
-                    full_name: formData.full_name.trim(),
-                    company_name: formData.company_name.trim(),
-                    email: formData.email.trim().toLowerCase()
-                }]);
+            // Submit via Edge Function
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/submit-feedback`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token: csrfToken,
+                    formData: {
+                        full_name: formData.full_name,
+                        company_name: formData.company_name,
+                        email: formData.email,
+                        satisfaction_overall: formData.satisfaction_overall,
+                        material_usefulness: formData.material_usefulness,
+                        recommend_colleagues: formData.recommend_colleagues,
+                        comments: formData.comments
+                    }
+                })
+            });
 
-            if (error) throw error;
+            const result = await response.json();
 
-            // Update rate limit timestamp
-            localStorage.setItem('last_feedback_submission', Date.now().toString());
+            if (!response.ok) {
+                if (response.status === 429) {
+                    // Rate limit exceeded
+                    throw new Error(result.error || 'Please wait before submitting again.');
+                }
+                throw new Error(result.error || 'Submission failed');
+            }
 
+            // Success
             setMessage({ type: 'success', text: '✨ Thank you! Your feedback has been submitted successfully.' });
             setFormData({
                 full_name: '',
@@ -188,9 +224,20 @@ export default function FeedbackForm() {
                 recommend_colleagues: '',
                 comments: ''
             });
+            
+            // Fetch new token for next submission
+            const tokenResponse = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (tokenResponse.ok) {
+                const tokenData = await tokenResponse.json();
+                setCsrfToken(tokenData.token);
+            }
+
         } catch (error) {
             console.error('Error submitting feedback:', error);
-            setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+            setMessage({ type: 'error', text: error.message || 'Something went wrong. Please try again.' });
         } finally {
             setLoading(false);
         }
@@ -223,9 +270,6 @@ export default function FeedbackForm() {
                         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
                             Feedback Form
                         </h1>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                            Please fill out the feedback form below to receive presentation materials from the Webinar Series 2025.
-                        </p>
                     </div>
 
                     {/* Message Alert */}
