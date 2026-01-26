@@ -172,9 +172,9 @@ export default function AdminDashboard() {
         )}
 
         {/* Table */}
-        <div className="bg-[#2b303b] rounded-2xl shadow-2xl border border-gray-700/50 overflow-hidden">
-          <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
-            <table className="w-full">
+        <div className="bg-[#2b303b] rounded-2xl shadow-2xl border border-gray-700/50">
+          <div className="overflow-auto" style={{ maxHeight: '600px' }}>
+            <table className="w-full table-auto">
               <thead className="bg-[#1a1e28] sticky top-0 z-10">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
