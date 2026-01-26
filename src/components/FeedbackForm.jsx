@@ -103,11 +103,10 @@ export default function FeedbackForm() {
     useEffect(() => {
         const fetchToken = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
+                const response = await fetch('/api/get-feedback-token', {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
+                        'Content-Type': 'application/json'
                     }
                 });
                 
@@ -184,12 +183,11 @@ export default function FeedbackForm() {
         }
 
         try {
-            // Submit via Edge Function
-            const response = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/submit-feedback`, {
+            // Submit via Next.js API Route
+            const response = await fetch('/api/submit-feedback', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     token: csrfToken,
@@ -228,11 +226,10 @@ export default function FeedbackForm() {
             });
             
             // Fetch new token for next submission
-            const tokenResponse = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-feedback-token`, {
+            const tokenResponse = await fetch('/api/get-feedback-token', {
                 method: 'GET',
                 headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`
+                    'Content-Type': 'application/json'
                 }
             });
             if (tokenResponse.ok) {
