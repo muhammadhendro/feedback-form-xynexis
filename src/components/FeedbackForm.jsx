@@ -270,7 +270,7 @@ export default function FeedbackForm() {
 
     if (isSubmitted) {
         return (
-            <div className="min-h-screen bg-transparent text-white p-4 md:p-8 flex items-center justify-center">
+            <div className="min-h-screen bg-transparent text-white p-4 pt-24 md:p-8 md:pt-32 flex items-start justify-center">
                 <div ref={wrapperRef} className="max-w-4xl w-full">
                     <div className="bg-[#20242F] rounded-2xl shadow-2xl p-8 md:p-12 text-center border border-gray-700/50 animate-[fadeInUp_0.5s_ease-out]">
                         <div className="mb-8 flex justify-center">
