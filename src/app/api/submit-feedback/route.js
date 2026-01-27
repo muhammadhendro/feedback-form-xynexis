@@ -1,4 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
+import crypto from 'crypto';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+// Secret for signing download tokens
+const DOWNLOAD_SECRET = process.env.SUPABASE_SERVICE_ROLE_KEY || 'fallback-secret-do-not-use-in-prod';
 
 export async function POST(request) {
   try {
@@ -114,9 +122,25 @@ export async function POST(request) {
         submitted_at: new Date().toISOString()
       });
 
+    // Generate Secure Download Token
+    // Payload: submission ID + timestamp
+    const submissionId = data?.id || 'unknown';
+    const timestamp = Date.now();
+    const payload = `${submissionId}:${timestamp}`;
+    
+    // Create HMAC signature
+    const signature = crypto
+        .createHmac('sha256', DOWNLOAD_SECRET)
+        .update(payload)
+        .digest('hex');
+    
+    // Combine payload and signature
+    const downloadToken = Buffer.from(`${payload}:${signature}`).toString('base64');
+
     return Response.json({ 
       success: true, 
-      message: 'Feedback submitted successfully' 
+      message: 'Feedback submitted successfully',
+      downloadToken: downloadToken
     });
 
   } catch (error) {

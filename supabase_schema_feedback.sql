@@ -31,3 +31,19 @@ ALTER TABLE feedback_submissions ADD COLUMN sector text;
 
 -- Add new column for one-on-one session interest
 ALTER TABLE feedback_submissions ADD COLUMN one_on_one_session text;
+
+-- Create table for download logs (Rate Limiting)
+create table download_logs (
+    id uuid default gen_random_uuid() primary key,
+    ip_address text,
+    token_signature text,
+    downloaded_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS for download_logs (though only service role will access it mostly)
+alter table download_logs enable row level security;
+
+-- Allow insert/select for service role (implicit, but good to be explicit if using standard client)
+-- For now, we assume service role usage in API route, so RLS policies might not be strictly needed directly unless we want row level restrictions.
+-- But let's add a basic policy just in case.
+create policy "Enable all access for service role" on download_logs for all using (auth.role() = 'service_role');

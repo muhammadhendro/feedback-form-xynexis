@@ -75,6 +75,7 @@ export default function FeedbackForm() {
     const [focusedField, setFocusedField] = useState(null);
     const [csrfToken, setCsrfToken] = useState(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [downloadToken, setDownloadToken] = useState(null);
 
     // Auto-resize iframe logic
     const wrapperRef = useRef(null);
@@ -232,6 +233,9 @@ export default function FeedbackForm() {
             // Success
             // Success
             setIsSubmitted(true);
+            if (result.downloadToken) {
+                setDownloadToken(result.downloadToken);
+            }
             setMessage({ type: 'success', text: '✨ Thank you! Your feedback has been submitted successfully.' });
             setFormData({
                 full_name: '',
@@ -300,12 +304,12 @@ export default function FeedbackForm() {
 
                         <div className="mt-10">
                             <p className="text-gray-400 mb-6">
-                                Congratulations! You are entitled to receive the webinar materials for “PDP 2026: Ready for Audit or at Risk of Sanctions?”, which can be downloaded via the link below.
+                                Congratulations! You are entitled to receive the webinar materials for “PDP 2026: Siap Audit atau Berisiko Sanksi?”, which can be downloaded via the link below.
                             </p>
                             <a
-                                href="/Xynexis_Slide_Materi_PDP_2026.pptx"
-                                download
-                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-xynexis-green to-xynexis-green-hover rounded-xl shadow-lg hover:shadow-xynexis-green/20 hover:scale-[1.02] active:scale-[0.98] group"
+                                href={downloadToken ? `/api/download-presentation?token=${downloadToken}` : '#'}
+                                target={downloadToken ? "_blank" : "_self"}
+                                className={`inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-xynexis-green to-xynexis-green-hover rounded-xl shadow-lg hover:shadow-xynexis-green/20 hover:scale-[1.02] active:scale-[0.98] group ${!downloadToken ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 <svg className="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
