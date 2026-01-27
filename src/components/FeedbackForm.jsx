@@ -329,17 +329,17 @@ export default function FeedbackForm() {
 
                 <div className="relative bg-xynexis-gray/80 backdrop-blur-sm px-4 pb-6 pt-4 md:px-12 md:pb-12 md:pt-6 md:rounded-2xl md:shadow-2xl md:border border-gray-700/50 animate-fade-in-up">
                     {/* Header */}
-                    <div className="text-center mb-10 pb-8 border-b border-gray-700/50">
+                    <div className="text-center mb-6 pb-4 border-b border-gray-700/50">
                         {/* Logo */}
-                        <div className="flex justify-center mb-6">
+                        <div className="flex justify-center mb-4">
                             <img
                                 src="/logo.svg"
                                 alt="Logo"
-                                className="h-32 md:h-48 w-auto"
+                                className="h-24 md:h-32 w-auto"
                             />
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
                             Feedback Form
                         </h1>
                     </div>
@@ -427,19 +427,19 @@ export default function FeedbackForm() {
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <InputField
+                                    label="Your email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    isFocused={focusedField === 'email'}
+                                    onFocus={() => setFocusedField('email')}
+                                    onBlur={() => setFocusedField(null)}
+                                />
                             </div>
-
-                            <InputField
-                                label="Your email"
-                                name="email"
-                                type="email"
-                                required
-                                value={formData.email}
-                                onChange={handleChange}
-                                isFocused={focusedField === 'email'}
-                                onFocus={() => setFocusedField('email')}
-                                onBlur={() => setFocusedField(null)}
-                            />
                         </div>
 
                         {/* Experience Section */}
