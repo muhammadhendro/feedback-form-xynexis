@@ -78,7 +78,7 @@ export default function AdminDashboard() {
       'Overall Satisfaction',
       'Material Usefulness',
       'Recommend to Colleagues',
-      'Toolkit Interest',
+      'One-on-One Session',
       'Privacy Consent',
       'Comments'
     ];
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
       sub.satisfaction_overall,
       sub.material_usefulness,
       sub.recommend_colleagues,
-      sub.toolkit_interest || '-',
+      sub.one_on_one_session || '-',
       sub.privacy_consent ? 'Yes' : 'No',
       sub.comments || ''
     ]);
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Satisfaction</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Material</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Recommend</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Toolkit</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">1-on-1 Session</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Comments</th>
                 </tr>
               </thead>
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
                         {sub.recommend_colleagues}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
-                        {sub.toolkit_interest || '-'}
+                        {sub.one_on_one_session || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-400 max-w-xs truncate">
                         {sub.comments || '-'}

@@ -97,7 +97,7 @@ export async function POST(request) {
         material_usefulness: formData.material_usefulness,
         recommend_colleagues: formData.recommend_colleagues,
         comments: formData.comments?.trim(),
-        toolkit_interest: formData.toolkit_interest,
+        one_on_one_session: formData.one_on_one_session,
         privacy_consent: formData.privacy_consent
       });
 

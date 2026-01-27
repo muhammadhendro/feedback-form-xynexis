@@ -28,3 +28,6 @@ ALTER TABLE feedback_submissions ADD COLUMN privacy_consent boolean DEFAULT fals
 
 -- Add new column for sector
 ALTER TABLE feedback_submissions ADD COLUMN sector text;
+
+-- Add new column for one-on-one session interest
+ALTER TABLE feedback_submissions ADD COLUMN one_on_one_session text;

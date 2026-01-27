@@ -66,7 +66,7 @@ export default function FeedbackForm() {
         material_usefulness: '',
         recommend_colleagues: '',
         comments: '',
-        toolkit_interest: '',
+        one_on_one_session: '',
         privacy_consent: false
     });
 
@@ -212,7 +212,7 @@ export default function FeedbackForm() {
                         material_usefulness: formData.material_usefulness,
                         recommend_colleagues: formData.recommend_colleagues,
                         comments: formData.comments,
-                        toolkit_interest: formData.toolkit_interest,
+                        one_on_one_session: formData.one_on_one_session,
                         privacy_consent: formData.privacy_consent
                     }
                 })
@@ -241,7 +241,7 @@ export default function FeedbackForm() {
                 material_usefulness: '',
                 recommend_colleagues: '',
                 comments: '',
-                toolkit_interest: '',
+                one_on_one_session: '',
                 privacy_consent: false
             });
             
@@ -319,7 +319,7 @@ export default function FeedbackForm() {
     }
 
     return (
-        <div className="min-h-screen bg-transparent text-white p-4 md:p-8 flex items-center justify-center">
+        <div className="min-h-screen bg-transparent text-white p-4 pt-24 md:p-8 md:pt-32 flex items-start justify-center">
             <div ref={wrapperRef} className="max-w-4xl w-full">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -509,36 +509,18 @@ export default function FeedbackForm() {
                             ></textarea>
                         </div>
 
-                        {/* Toolkit Interest */}
-                        <div className="space-y-3 pt-4">
-                            <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'toolkit_interest' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                Which Xynexis Toolkit topic are you most interested in?
-                            </label>
-                            <div className="relative">
-                                <select
-                                    name="toolkit_interest"
-                                    value={formData.toolkit_interest}
-                                    onChange={handleChange}
-                                    onFocus={() => setFocusedField('toolkit_interest')}
-                                    onBlur={() => setFocusedField(null)}
-                                    className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white appearance-none
-                                focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20
-                                transition-all duration-300 hover:border-gray-600 shadow-sm cursor-pointer"
-                                >
-                                    <option value="">Select an interest...</option>
-                                    <option value="SOC / MDR">SOC / MDR</option>
-                                    <option value="Data Security / DLP">Data Security / DLP</option>
-                                    <option value="Network Access Control (NAC)">Network Access Control (NAC)</option>
-                                    <option value="Cloud Security">Cloud Security</option>
-                                    <option value="DevSecOps">DevSecOps</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
-                            </div>
+                        {/* One-on-One Session Interest */}
+                        <div className="pt-4">
+                            <SelectGroup
+                                label="Are you interested in getting a more in-depth toolkit and hoping to schedule a separate session through a one-on-one session?"
+                                name="one_on_one_session"
+                                options={yesNoOptions}
+                                value={formData.one_on_one_session}
+                                onChange={handleChange}
+                                isFocused={focusedField === 'one_on_one_session'}
+                                onFocus={() => setFocusedField('one_on_one_session')}
+                                onBlur={() => setFocusedField(null)}
+                            />
                         </div>
 
                         {/* Privacy Consent */}
