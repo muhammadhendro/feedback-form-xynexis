@@ -64,13 +64,16 @@ export default function FeedbackForm() {
         satisfaction_overall: '',
         material_usefulness: '',
         recommend_colleagues: '',
-        comments: ''
+        comments: '',
+        toolkit_interest: '',
+        privacy_consent: false
     });
 
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [focusedField, setFocusedField] = useState(null);
     const [csrfToken, setCsrfToken] = useState(null);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     // Auto-resize iframe logic
     const wrapperRef = useRef(null);
@@ -127,10 +130,10 @@ export default function FeedbackForm() {
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -157,6 +160,10 @@ export default function FeedbackForm() {
             errors.email = 'Email is required';
         } else if (!emailRegex.test(formData.email)) {
             errors.email = 'Invalid email address';
+        }
+
+        if (!formData.privacy_consent) {
+            errors.privacy_consent = 'You must agree to the privacy policy';
         }
 
         return errors;
@@ -198,7 +205,9 @@ export default function FeedbackForm() {
                         satisfaction_overall: formData.satisfaction_overall,
                         material_usefulness: formData.material_usefulness,
                         recommend_colleagues: formData.recommend_colleagues,
-                        comments: formData.comments
+                        comments: formData.comments,
+                        toolkit_interest: formData.toolkit_interest,
+                        privacy_consent: formData.privacy_consent
                     }
                 })
             });
@@ -214,6 +223,8 @@ export default function FeedbackForm() {
             }
 
             // Success
+            // Success
+            setIsSubmitted(true);
             setMessage({ type: 'success', text: '✨ Thank you! Your feedback has been submitted successfully.' });
             setFormData({
                 full_name: '',
@@ -222,7 +233,9 @@ export default function FeedbackForm() {
                 satisfaction_overall: '',
                 material_usefulness: '',
                 recommend_colleagues: '',
-                comments: ''
+                comments: '',
+                toolkit_interest: '',
+                privacy_consent: false
             });
             
             // Fetch new token for next submission
@@ -248,9 +261,59 @@ export default function FeedbackForm() {
     const scaleOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
     const yesNoOptions = ['Yes', 'No'];
 
+    if (isSubmitted) {
+        return (
+            <div className="min-h-screen bg-transparent text-white p-4 md:p-8 flex items-center justify-center">
+                <div ref={wrapperRef} className="max-w-4xl w-full">
+                    <div className="bg-[#20242F] rounded-2xl shadow-2xl p-8 md:p-12 text-center border border-gray-700/50 animate-[fadeInUp_0.5s_ease-out]">
+                        <div className="mb-8 flex justify-center">
+                            <img
+                                src="/logo.svg"
+                                alt="Logo"
+                                className="h-32 md:h-48 w-auto"
+                            />
+                        </div>
+                        
+                        <div className="mb-6">
+                            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-xynexis-green/20 mb-6">
+                                <svg className="h-10 w-10 text-xynexis-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+                                Thank You!
+                            </h2>
+                            <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
+                                Thank you for participating in our <span className="text-xynexis-green font-semibold">Webinar Series</span>.
+                                <br />
+                                Your feedback is incredibly valuable to us.
+                            </p>
+                        </div>
+
+                        <div className="mt-10">
+                            <p className="text-gray-400 mb-6">
+                                As a token of our appreciation, please feel free to download the presentation material below:
+                            </p>
+                            <a
+                                href="/presentation-material.pdf"
+                                download
+                                className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-xynexis-green to-xynexis-green-hover rounded-xl shadow-lg hover:shadow-xynexis-green/20 hover:scale-[1.02] active:scale-[0.98] group"
+                            >
+                                <svg className="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download Presentation Material
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="w-full px-0 pt-24 md:p-8 md:pt-28" ref={wrapperRef}>
-            <div className="w-full md:max-w-4xl md:mx-auto">
+        <div className="min-h-screen bg-transparent text-white p-4 md:p-8 flex items-center justify-center">
+            <div ref={wrapperRef} className="max-w-4xl w-full">
                 {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-xynexis-green/5 rounded-full blur-3xl"></div>
@@ -397,12 +460,70 @@ export default function FeedbackForm() {
                                 onChange={handleChange}
                                 onFocus={() => setFocusedField('comments')}
                                 onBlur={() => setFocusedField(null)}
-                                rows="5"
+                                rows="4"
                                 className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
                            focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
                            transition-all duration-300 resize-none hover:border-gray-600 shadow-sm"
                                 placeholder="Share your thoughts with us..."
                             ></textarea>
+                        </div>
+
+                        {/* Toolkit Interest */}
+                        <div className="space-y-3 pt-4">
+                            <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'toolkit_interest' ? 'text-xynexis-green' : 'text-gray-400'}`}>
+                                Which Xynexis Toolkit topic are you most interested in?
+                            </label>
+                            <div className="relative">
+                                <select
+                                    name="toolkit_interest"
+                                    value={formData.toolkit_interest}
+                                    onChange={handleChange}
+                                    onFocus={() => setFocusedField('toolkit_interest')}
+                                    onBlur={() => setFocusedField(null)}
+                                    className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white appearance-none
+                                focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20
+                                transition-all duration-300 hover:border-gray-600 shadow-sm cursor-pointer"
+                                >
+                                    <option value="">Select an interest...</option>
+                                    <option value="SOC / MDR">SOC / MDR</option>
+                                    <option value="Data Security / DLP">Data Security / DLP</option>
+                                    <option value="Network Access Control (NAC)">Network Access Control (NAC)</option>
+                                    <option value="Cloud Security">Cloud Security</option>
+                                    <option value="DevSecOps">DevSecOps</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Privacy Consent */}
+                        <div className="pt-4 pb-2">
+                            <label className="flex items-start gap-3 cursor-pointer group">
+                                <div className="relative flex items-center mt-0.5">
+                                    <input
+                                        type="checkbox"
+                                        name="privacy_consent"
+                                        checked={formData.privacy_consent}
+                                        onChange={handleChange}
+                                        className="peer sr-only"
+                                    />
+                                    <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
+                                    peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
+                                    transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
+                                    <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span className={`text-sm select-none transition-colors duration-200 ${formData.privacy_consent ? 'text-gray-200' : 'text-gray-400'}`}>
+                                    I agree to the <a href="#" className="text-xynexis-green hover:underline">Privacy Policy</a> and consent to having my data processed.
+                                </span>
+                            </label>
+                            {/* Error for privacy consent if needed (implicitly handled by global error message, but could add specific one here) */}
                         </div>
 
                         {/* Submit Button */}

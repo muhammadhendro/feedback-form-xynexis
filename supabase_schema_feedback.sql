@@ -21,3 +21,7 @@ create policy "Enable insert for everyone" on feedback_submissions for insert wi
 
 -- Allow select only for authenticated (if needed, or just admin)
 create policy "Enable read access for authenticated users only" on feedback_submissions for select using (auth.role() = 'authenticated');
+
+-- Add new columns for toolkit interest and privacy consent
+ALTER TABLE feedback_submissions ADD COLUMN toolkit_interest text;
+ALTER TABLE feedback_submissions ADD COLUMN privacy_consent boolean DEFAULT false;
