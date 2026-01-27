@@ -81,7 +81,8 @@ export default function FeedbackForm() {
     useEffect(() => {
         const sendHeight = () => {
             if (wrapperRef.current) {
-                const height = wrapperRef.current.offsetHeight;
+                // Add 200px buffer to account for top padding (pt-24/pt-32) and bottom spacing
+                const height = wrapperRef.current.offsetHeight + 200;
                 window.parent.postMessage({ frameHeight: height }, '*');
             }
         };
@@ -335,7 +336,7 @@ export default function FeedbackForm() {
                             <img
                                 src="/logo.svg"
                                 alt="Logo"
-                                className="h-24 md:h-32 w-auto"
+                                className="h-32 md:h-48 w-auto"
                             />
                         </div>
 
