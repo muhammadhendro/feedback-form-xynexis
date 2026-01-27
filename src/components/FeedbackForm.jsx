@@ -548,7 +548,7 @@ export default function FeedbackForm() {
                                     </svg>
                                 </div>
                                 <span className={`text-sm select-none transition-colors duration-200 ${formData.privacy_consent ? 'text-gray-200' : 'text-gray-400'}`}>
-                                    I agree to the <a href="https://xynexis.com/privacy-notice/" className="text-xynexis-green hover:underline">Privacy Notice</a> and consent to having my data processed.
+                                    I agree to the <a href="https://xynexis.com/privacy-notice/" target="_blank" rel="noopener noreferrer" className="text-xynexis-green hover:underline">Privacy Notice</a> and consent to having my data processed.
                                 </span>
                             </label>
                             {/* Error for privacy consent if needed (implicitly handled by global error message, but could add specific one here) */}
