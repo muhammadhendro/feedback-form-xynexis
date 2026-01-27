@@ -291,15 +291,15 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for participating in our <span className="text-xynexis-green font-semibold">Webinar Series</span>.
-                                <br />
-                                Your feedback is incredibly valuable to us.
+                                Terima kasih atas partisipasi Bapak/Ibu yang telah meluangkan waktu untuk bergabung pada webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?”. Semoga materi yang disampaikan dapat memberikan insight dan manfaat bagi penerapan pelindungan data di organisasi Bapak/Ibu. Sampai jumpa pada webinar series bulan depan.
+                                
+                               
                             </p>
                         </div>
 
                         <div className="mt-10">
                             <p className="text-gray-400 mb-6">
-                                As a token of our appreciation, please feel free to download the presentation material below:
+                                Selamat, Anda berhak mendapatkan materi webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?” yang dapat diunduh melalui tautan di bawah ini.
                             </p>
                             <a
                                 href="/presentation-material.pdf"
@@ -557,7 +557,7 @@ export default function FeedbackForm() {
                          shadow-lg hover:shadow-xynexis-green/20 ${loading
                                     ? 'bg-gray-600 cursor-not-allowed opacity-75'
                                     : 'bg-gradient-to-r from-xynexis-green to-xynexis-green-hover hover:scale-[1.02] active:scale-[0.98]'
-                                }`}
+                                } mb-6`}
                         >
                             {loading ? (
                                 <span className="flex items-center justify-center gap-3">
@@ -578,7 +578,7 @@ export default function FeedbackForm() {
                         </button>
 
                         {/* Footer Note */}
-                        <div className="pt-6 text-center border-t border-gray-700/50">
+                        <div className="pt-12 text-center border-t border-gray-700/50">
                             <p className="text-gray-500 text-sm">
                                 We would love to hear your feedback so that we can provide a better experience at the next{' '}
                                 <span className="text-xynexis-green font-semibold">Webinar Series</span>.
