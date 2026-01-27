@@ -94,7 +94,7 @@ export async function POST(request) {
       .eq('token', token);
 
     // 4. Insert feedback submission
-    const { error: insertError } = await supabase
+    const { data, error: insertError } = await supabase
       .from('feedback_submissions')
       .insert({
         full_name: formData.full_name?.trim(),
@@ -107,7 +107,9 @@ export async function POST(request) {
         comments: formData.comments?.trim(),
         one_on_one_session: formData.one_on_one_session,
         privacy_consent: formData.privacy_consent
-      });
+      })
+      .select()
+      .single();
 
     if (insertError) {
       console.error('Error inserting feedback:', insertError);
