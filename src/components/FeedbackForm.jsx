@@ -491,7 +491,7 @@ export default function FeedbackForm() {
                         </div>
 
                         {/* Comments Section */}
-                        <div className="space-y-3 pt-8 border-t border-gray-700/50">
+                        <div className="space-y-3 pt-4 border-t border-gray-700/50">
                             <label className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
                                 Please provide us with your comments, questions, or criticism and suggestions regarding the Webinar Series event.
                             </label>
@@ -510,7 +510,7 @@ export default function FeedbackForm() {
                         </div>
 
                         {/* One-on-One Session Interest */}
-                        <div className="pt-4">
+                        <div className="pt-0">
                             <SelectGroup
                                 label="Are you interested in getting a more in-depth toolkit and hoping to schedule a separate session through a one-on-one session?"
                                 name="one_on_one_session"
@@ -524,7 +524,7 @@ export default function FeedbackForm() {
                         </div>
 
                         {/* Privacy Consent */}
-                        <div className="pt-4 pb-2">
+                        <div className="pt-0 pb-1">
                             <label className="flex items-start gap-3 cursor-pointer group">
                                 <div className="relative flex items-center mt-0.5">
                                     <input
@@ -543,7 +543,7 @@ export default function FeedbackForm() {
                                     </svg>
                                 </div>
                                 <span className={`text-sm select-none transition-colors duration-200 ${formData.privacy_consent ? 'text-gray-200' : 'text-gray-400'}`}>
-                                    I agree to the <a href="#" className="text-xynexis-green hover:underline">Privacy Policy</a> and consent to having my data processed.
+                                    I agree to the <a href="https://xynexis.com/privacy-notice/" className="text-xynexis-green hover:underline">Privacy Notice</a> and consent to having my data processed.
                                 </span>
                             </label>
                             {/* Error for privacy consent if needed (implicitly handled by global error message, but could add specific one here) */}
