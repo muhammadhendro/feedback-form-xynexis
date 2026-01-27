@@ -25,3 +25,6 @@ create policy "Enable read access for authenticated users only" on feedback_subm
 -- Add new columns for toolkit interest and privacy consent
 ALTER TABLE feedback_submissions ADD COLUMN toolkit_interest text;
 ALTER TABLE feedback_submissions ADD COLUMN privacy_consent boolean DEFAULT false;
+
+-- Add new column for sector
+ALTER TABLE feedback_submissions ADD COLUMN sector text;

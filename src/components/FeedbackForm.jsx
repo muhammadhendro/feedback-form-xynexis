@@ -60,6 +60,7 @@ export default function FeedbackForm() {
     const [formData, setFormData] = useState({
         full_name: '',
         company_name: '',
+        sector: '',
         email: '',
         satisfaction_overall: '',
         material_usefulness: '',
@@ -156,6 +157,10 @@ export default function FeedbackForm() {
             errors.company_name = 'Company name is too short';
         }
 
+        if (!formData.sector) {
+            errors.sector = 'Sector is required';
+        }
+
         if (!formData.email) {
             errors.email = 'Email is required';
         } else if (!emailRegex.test(formData.email)) {
@@ -201,6 +206,7 @@ export default function FeedbackForm() {
                     formData: {
                         full_name: formData.full_name,
                         company_name: formData.company_name,
+                        sector: formData.sector,
                         email: formData.email,
                         satisfaction_overall: formData.satisfaction_overall,
                         material_usefulness: formData.material_usefulness,
@@ -229,6 +235,7 @@ export default function FeedbackForm() {
             setFormData({
                 full_name: '',
                 company_name: '',
+                sector: '',
                 email: '',
                 satisfaction_overall: '',
                 material_usefulness: '',
@@ -386,6 +393,40 @@ export default function FeedbackForm() {
                                     onFocus={() => setFocusedField('company_name')}
                                     onBlur={() => setFocusedField(null)}
                                 />
+
+                                {/* Sector Dropdown */}
+                                <div className="space-y-2">
+                                    <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'sector' ? 'text-xynexis-green' : 'text-gray-400'}`}>
+                                        Sector <span className="text-xynexis-green">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            name="sector"
+                                            value={formData.sector}
+                                            onChange={handleChange}
+                                            onFocus={() => setFocusedField('sector')}
+                                            onBlur={() => setFocusedField(null)}
+                                            className={`w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border text-white appearance-none
+                                                focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20
+                                                transition-all duration-300 hover:border-gray-600 shadow-sm cursor-pointer
+                                                ${formData.sector ? 'text-white' : 'text-gray-500'}
+                                                ${focusedField === 'sector' ? 'border-xynexis-green' : 'border-gray-700'}`}
+                                        >
+                                            <option value="" disabled>Select your sector...</option>
+                                            <option value="Banking">Banking</option>
+                                            <option value="Fintech">Fintech</option>
+                                            <option value="Government">Government</option>
+                                            <option value="BUMN">BUMN</option>
+                                            <option value="Manufacture">Manufacture</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <InputField

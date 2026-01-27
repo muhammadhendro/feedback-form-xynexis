@@ -91,6 +91,7 @@ export async function POST(request) {
       .insert({
         full_name: formData.full_name?.trim(),
         company_name: formData.company_name?.trim(),
+        sector: formData.sector,
         email: formData.email?.trim().toLowerCase(),
         satisfaction_overall: formData.satisfaction_overall,
         material_usefulness: formData.material_usefulness,

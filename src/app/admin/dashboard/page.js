@@ -73,6 +73,7 @@ export default function AdminDashboard() {
       'Date',
       'Full Name',
       'Company',
+      'Sector',
       'Email',
       'Overall Satisfaction',
       'Material Usefulness',
@@ -87,6 +88,7 @@ export default function AdminDashboard() {
       new Date(sub.created_at).toLocaleString(),
       sub.full_name,
       sub.company_name,
+      sub.sector || '-',
       sub.email,
       sub.satisfaction_overall,
       sub.material_usefulness,
@@ -184,6 +186,7 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Date</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Name</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Company</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Sector</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Satisfaction</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Material</th>
@@ -214,6 +217,9 @@ export default function AdminDashboard() {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
                         {sub.company_name}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        {sub.sector || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
                         {sub.email}
