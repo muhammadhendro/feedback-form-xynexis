@@ -292,7 +292,7 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Terima kasih atas partisipasi Bapak/Ibu yang telah meluangkan waktu untuk bergabung pada webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?”. Semoga materi yang disampaikan dapat memberikan insight dan manfaat bagi penerapan pelindungan data di organisasi Bapak/Ibu. Sampai jumpa pada webinar series bulan depan.
+                                Thank you for your participation and for taking the time to join the webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?”. We hope the materials presented provided valuable insights and practical benefits for the implementation of data protection within your organization. We look forward to seeing you at our next webinar series next month.
                                 
                                
                             </p>
@@ -300,10 +300,10 @@ export default function FeedbackForm() {
 
                         <div className="mt-10">
                             <p className="text-gray-400 mb-6">
-                                Selamat, Anda berhak mendapatkan materi webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?” yang dapat diunduh melalui tautan di bawah ini.
+                                Congratulations! You are entitled to receive the webinar materials for “PDP 2026: Ready for Audit or at Risk of Sanctions?”, which can be downloaded via the link below.
                             </p>
                             <a
-                                href="/presentation-material.pdf"
+                                href="/Xynexis_Slide_Materi_PDP_2026.pptx"
                                 download
                                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-xynexis-green to-xynexis-green-hover rounded-xl shadow-lg hover:shadow-xynexis-green/20 hover:scale-[1.02] active:scale-[0.98] group"
                             >
@@ -513,7 +513,7 @@ export default function FeedbackForm() {
                         {/* One-on-One Session Interest */}
                         <div className="pt-0">
                             <SelectGroup
-                                label="Are you interested in getting a more in-depth toolkit and hoping to schedule a separate session through a one-on-one session?"
+                                label="Would you be interested in scheduling a one-on-one session to gain access to our exclusive toolkit?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
