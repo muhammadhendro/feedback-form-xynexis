@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '../../../utils/supabaseClient';
+import * as XLSX from 'xlsx';
 
 export default function AdminDashboard() {
   const [submissions, setSubmissions] = useState([]);
@@ -65,55 +67,32 @@ export default function AdminDashboard() {
     router.push('/admin');
   };
 
-  const exportToCSV = () => {
-    if (filteredSubmissions.length === 0) return;
+  const exportToExcel = () => {
+    // Flatten data for Excel
+    const data = filteredSubmissions.map(sub => ({
+      'Date': new Date(sub.created_at).toLocaleDateString(),
+      'Time': new Date(sub.created_at).toLocaleTimeString(),
+      'Name': sub.full_name,
+      'Company': sub.company_name,
+      'Sector': sub.sector || '-',
+      'Email': sub.email,
+      'Satisfaction': sub.satisfaction_overall,
+      'Material Usefulness': sub.material_usefulness,
+      'Recommend': sub.recommend_colleagues,
+      '1-on-1 Session': sub.one_on_one_session || '-',
+      'Privacy Consent': sub.privacy_consent ? 'Yes' : 'No',
+      'Comments': sub.comments || '-'
+    }));
 
-    // CSV headers
-    const headers = [
-      'Date',
-      'Full Name',
-      'Company',
-      'Sector',
-      'Email',
-      'Overall Satisfaction',
-      'Material Usefulness',
-      'Recommend to Colleagues',
-      'One-on-One Session',
-      'Privacy Consent',
-      'Comments'
-    ];
+    // Create worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
 
-    // CSV rows
-    const rows = filteredSubmissions.map(sub => [
-      new Date(sub.created_at).toLocaleString(),
-      sub.full_name,
-      sub.company_name,
-      sub.sector || '-',
-      sub.email,
-      sub.satisfaction_overall,
-      sub.material_usefulness,
-      sub.recommend_colleagues,
-      sub.one_on_one_session || '-',
-      sub.privacy_consent ? 'Yes' : 'No',
-      sub.comments || ''
-    ]);
+    // Create workbook
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Submissions");
 
-    // Combine headers and rows
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
-    ].join('\n');
-
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `feedback_submissions_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Generate Excel file
+    XLSX.writeFile(wb, `feedback_submissions_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
   if (loading) {
@@ -140,11 +119,11 @@ export default function AdminDashboard() {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={exportToCSV}
+                onClick={exportToExcel}
                 className="px-6 py-3 bg-[#67C23A] hover:bg-[#5aaa32] text-white font-semibold rounded-lg 
                      transition-all duration-300 shadow-lg hover:shadow-[#67C23A]/20"
               >
-                📥 Export CSV
+                Export Excel
               </button>
               <button
                 onClick={handleLogout}
