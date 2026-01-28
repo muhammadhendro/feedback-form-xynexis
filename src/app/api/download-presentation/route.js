@@ -109,8 +109,8 @@ export async function GET(request) {
 
         return new NextResponse(fileBuffer, {
             headers: {
-                'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                'Content-Disposition': 'attachment; filename="Xynexis_Slide_Materi_PDP_2026.pptx"',
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="Slide Webinar January 2026.pdf"',
             },
         });
 
