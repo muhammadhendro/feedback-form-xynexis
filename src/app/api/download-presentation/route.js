@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const filePath = path.join(process.cwd(), 'secure_docs', 'Xynexis_Slide_Materi_PDP_2026.pptx');
+        const filePath = path.join(process.cwd(), 'secure_docs', '[Slide Webinar January 2026].pdf');
 
         if (!fs.existsSync(filePath)) {
             console.error('File not found:', filePath);
