@@ -23,7 +23,7 @@ const InputField = ({ label, name, type = 'text', required = false, value, onCha
     </div>
 );
 
-const SelectGroup = ({ label, name, options, required = false, value, onChange, isFocused, onFocus, onBlur }) => (
+const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus, onBlur, required = false }) => (
     <div className="w-full group">
         <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${isFocused ? 'text-xynexis-green' : 'text-gray-400'}`}>
             {label} {required && <span className="text-xynexis-green">*</span>}
@@ -171,6 +171,19 @@ export default function FeedbackForm() {
 
         if (!formData.privacy_consent) {
             errors.privacy_consent = 'You must agree to the privacy policy';
+        }
+
+        if (!formData.satisfaction_overall) {
+            errors.satisfaction_overall = 'Please rate your satisfaction';
+        }
+        if (!formData.material_usefulness) {
+            errors.material_usefulness = 'Please rate material usefulness';
+        }
+        if (!formData.recommend_colleagues) {
+            errors.recommend_colleagues = 'Please select if you recommend this';
+        }
+        if (!formData.one_on_one_session) {
+            errors.one_on_one_session = 'Please select an option for 1-on-1 session';
         }
 
         return errors;
@@ -525,6 +538,7 @@ export default function FeedbackForm() {
                                 isFocused={focusedField === 'one_on_one_session'}
                                 onFocus={() => setFocusedField('one_on_one_session')}
                                 onBlur={() => setFocusedField(null)}
+                                required={true}
                             />
                         </div>
 
