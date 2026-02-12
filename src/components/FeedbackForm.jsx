@@ -69,7 +69,8 @@ export default function FeedbackForm() {
         recommend_colleagues: '',
         comments: '',
         one_on_one_session: '',
-        privacy_consent: false
+        privacy_consent: false,
+        marketing_consent: false
     });
 
     const [loading, setLoading] = useState(false);
@@ -236,7 +237,8 @@ export default function FeedbackForm() {
                         recommend_colleagues: formData.recommend_colleagues,
                         comments: formData.comments,
                         one_on_one_session: formData.one_on_one_session,
-                        privacy_consent: formData.privacy_consent
+                        privacy_consent: formData.privacy_consent,
+                        marketing_consent: formData.marketing_consent
                     }
                 })
             });
@@ -270,7 +272,8 @@ export default function FeedbackForm() {
                 recommend_colleagues: '',
                 comments: '',
                 one_on_one_session: '',
-                privacy_consent: false
+                privacy_consent: false,
+                marketing_consent: false
             });
             
             // Fetch new token for next submission
@@ -598,6 +601,31 @@ export default function FeedbackForm() {
                                 </span>
                             </label>
                             {/* Error for privacy consent if needed (implicitly handled by global error message, but could add specific one here) */}
+                        </div>
+
+                        {/* Marketing Consent */}
+                        <div className="pt-0 pb-1">
+                            <label className="flex items-start gap-3 cursor-pointer group">
+                                <div className="relative flex items-center mt-0.5">
+                                    <input
+                                        type="checkbox"
+                                        name="marketing_consent"
+                                        checked={formData.marketing_consent}
+                                        onChange={handleChange}
+                                        className="peer sr-only"
+                                    />
+                                    <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
+                                    peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
+                                    transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
+                                    <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span className={`text-sm select-none transition-colors duration-200 ${formData.marketing_consent ? 'text-gray-200' : 'text-gray-400'}`}>
+                                    I agree to receive marketing communications and promotional offers from Xynexis
+                                </span>
+                            </label>
                         </div>
 
                         {/* Submit Button */}

@@ -108,7 +108,8 @@ export async function POST(request) {
         recommend_colleagues: formData.recommend_colleagues,
         comments: formData.comments?.trim(),
         one_on_one_session: formData.one_on_one_session,
-        privacy_consent: formData.privacy_consent
+        privacy_consent: formData.privacy_consent,
+        marketing_consent: formData.marketing_consent
       })
       .select()
       .single();
