@@ -577,55 +577,57 @@ export default function FeedbackForm() {
                             />
                         </div>
 
-                        {/* Privacy Consent */}
-                        <div className="pt-0 pb-1">
-                            <label className="flex items-start gap-3 cursor-pointer group">
-                                <div className="relative flex items-center mt-0.5">
-                                    <input
-                                        type="checkbox"
-                                        name="privacy_consent"
-                                        checked={formData.privacy_consent}
-                                        onChange={handleChange}
-                                        className="peer sr-only"
-                                    />
-                                    <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
-                                    peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
-                                    transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
-                                    <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <span className={`text-sm select-none transition-colors duration-200 ${formData.privacy_consent ? 'text-gray-200' : 'text-gray-400'}`}>
-                                    I agree to the <a href="https://xynexis.com/privacy-notice/" target="_blank" rel="noopener noreferrer" className="text-xynexis-green hover:underline">Privacy Notice</a> and consent to having my data processed.
-                                </span>
-                            </label>
-                            {/* Error for privacy consent if needed (implicitly handled by global error message, but could add specific one here) */}
-                        </div>
+                        {/* Consents Group */}
+                        <div className="space-y-4 pt-2">
+                            {/* Privacy Consent */}
+                            <div>
+                                <label className="flex items-start gap-3 cursor-pointer group">
+                                    <div className="relative flex items-center mt-0.5">
+                                        <input
+                                            type="checkbox"
+                                            name="privacy_consent"
+                                            checked={formData.privacy_consent}
+                                            onChange={handleChange}
+                                            className="peer sr-only"
+                                        />
+                                        <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
+                                        peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
+                                        transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
+                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <span className={`text-sm select-none transition-colors duration-200 ${formData.privacy_consent ? 'text-gray-200' : 'text-gray-400'}`}>
+                                        I agree to the <a href="https://xynexis.com/privacy-notice/" target="_blank" rel="noopener noreferrer" className="text-xynexis-green hover:underline">Privacy Notice</a> and consent to having my data processed.
+                                    </span>
+                                </label>
+                            </div>
 
-                        {/* Marketing Consent */}
-                        <div className="pt-0 pb-1">
-                            <label className="flex items-start gap-3 cursor-pointer group">
-                                <div className="relative flex items-center mt-0.5">
-                                    <input
-                                        type="checkbox"
-                                        name="marketing_consent"
-                                        checked={formData.marketing_consent}
-                                        onChange={handleChange}
-                                        className="peer sr-only"
-                                    />
-                                    <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
-                                    peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
-                                    transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
-                                    <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                </div>
-                                <span className={`text-sm select-none transition-colors duration-200 ${formData.marketing_consent ? 'text-gray-200' : 'text-gray-400'}`}>
-                                    I agree to receive marketing communications and promotional offers from Xynexis
-                                </span>
-                            </label>
+                            {/* Marketing Consent */}
+                            <div>
+                                <label className="flex items-start gap-3 cursor-pointer group">
+                                    <div className="relative flex items-center mt-0.5">
+                                        <input
+                                            type="checkbox"
+                                            name="marketing_consent"
+                                            checked={formData.marketing_consent}
+                                            onChange={handleChange}
+                                            className="peer sr-only"
+                                        />
+                                        <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
+                                        peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
+                                        transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
+                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <span className={`text-sm select-none transition-colors duration-200 ${formData.marketing_consent ? 'text-gray-200' : 'text-gray-400'}`}>
+                                        I agree to receive marketing communications and promotional offers from Xynexis
+                                    </span>
+                                </label>
+                            </div>
                         </div>
 
                         {/* Submit Button */}

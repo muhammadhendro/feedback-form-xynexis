@@ -31,6 +31,45 @@ export async function POST(request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
+    // Server-Side Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex = /^[a-zA-Z\s\.\-\']+$/;
+
+    // Length Limits
+    const MAX_LENGTH = {
+        full_name: 100,
+        company_name: 100,
+        sector: 50,
+        position: 100,
+        email: 255,
+        phone_number: 20,
+        comments: 1000
+    };
+
+    if (formData.full_name?.length > MAX_LENGTH.full_name || !nameRegex.test(formData.full_name)) {
+        return Response.json({ error: 'Invalid Full Name' }, { status: 400 });
+    }
+
+    if (formData.email?.length > MAX_LENGTH.email || !emailRegex.test(formData.email)) {
+        return Response.json({ error: 'Invalid Email Address' }, { status: 400 });
+    }
+
+    if (formData.company_name?.length > MAX_LENGTH.company_name) {
+        return Response.json({ error: 'Company Name too long' }, { status: 400 });
+    }
+
+    if (formData.position?.length > MAX_LENGTH.position) {
+        return Response.json({ error: 'Position too long' }, { status: 400 });
+    }
+
+    if (formData.phone_number?.length > MAX_LENGTH.phone_number) {
+        return Response.json({ error: 'Phone Number too long' }, { status: 400 });
+    }
+
+    if (formData.comments?.length > MAX_LENGTH.comments) {
+        return Response.json({ error: 'Comments too long' }, { status: 400 });
+    }
+
     // 1. Validate token
     const { data: tokenData, error: tokenError } = await supabase
       .from('rate_limit_tokens')
