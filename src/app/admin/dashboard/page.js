@@ -75,12 +75,15 @@ export default function AdminDashboard() {
       'Name': sub.full_name,
       'Company': sub.company_name,
       'Sector': sub.sector || '-',
+      'Position': sub.position || '-',
       'Email': sub.email,
+      'Phone': sub.phone_number || '-',
       'Satisfaction': sub.satisfaction_overall,
       'Material Usefulness': sub.material_usefulness,
       'Recommend': sub.recommend_colleagues,
       '1-on-1 Session': sub.one_on_one_session || '-',
       'Privacy Consent': sub.privacy_consent ? 'Yes' : 'No',
+      'Marketing Consent': sub.marketing_consent ? 'Yes' : 'No',
       'Comments': sub.comments || '-'
     }));
 
@@ -166,7 +169,9 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Name</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Company</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Sector</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Position</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Email</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Phone</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Satisfaction</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Material</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Recommend</th>
@@ -201,7 +206,13 @@ export default function AdminDashboard() {
                         {sub.sector || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">
+                        {sub.position || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
                         {sub.email}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        {sub.phone_number || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
