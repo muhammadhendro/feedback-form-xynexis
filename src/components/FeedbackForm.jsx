@@ -61,7 +61,9 @@ export default function FeedbackForm() {
         full_name: '',
         company_name: '',
         sector: '',
+        position: '',
         email: '',
+        phone_number: '',
         satisfaction_overall: '',
         material_usefulness: '',
         recommend_colleagues: '',
@@ -163,6 +165,10 @@ export default function FeedbackForm() {
             errors.sector = 'Sector is required';
         }
 
+        if (!formData.position) {
+            errors.position = 'Position is required';
+        }
+
         if (!formData.email) {
             errors.email = 'Email is required';
         } else if (!emailRegex.test(formData.email)) {
@@ -222,7 +228,9 @@ export default function FeedbackForm() {
                         full_name: formData.full_name,
                         company_name: formData.company_name,
                         sector: formData.sector,
+                        position: formData.position,
                         email: formData.email,
+                        phone_number: formData.phone_number,
                         satisfaction_overall: formData.satisfaction_overall,
                         material_usefulness: formData.material_usefulness,
                         recommend_colleagues: formData.recommend_colleagues,
@@ -254,7 +262,9 @@ export default function FeedbackForm() {
                 full_name: '',
                 company_name: '',
                 sector: '',
+                position: '',
                 email: '',
+                phone_number: '',
                 satisfaction_overall: '',
                 material_usefulness: '',
                 recommend_colleagues: '',
@@ -309,7 +319,7 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for your participation and for taking the time to join the webinar “PDP 2026: Siap Audit atau Berisiko Sanksi?”. We hope the materials presented provided valuable insights and practical benefits for the implementation of data protection within your organization. We look forward to seeing you at our next webinar series next month.
+                                Thank you for your participation and for taking the time to join the webinar “Building a Realistic and Scalable Cybersecurity Strategy Roadmap”. We hope the materials presented provided valuable insights and practical benefits for the implementation of data protection within your organization. We look forward to seeing you at our next webinar series next month.
                                 
                                
                             </p>
@@ -445,6 +455,17 @@ export default function FeedbackForm() {
                                         </div>
                                     </div>
                                 </div>
+
+                                <InputField
+                                    label="Position"
+                                    name="position"
+                                    required
+                                    value={formData.position}
+                                    onChange={handleChange}
+                                    isFocused={focusedField === 'position'}
+                                    onFocus={() => setFocusedField('position')}
+                                    onBlur={() => setFocusedField(null)}
+                                />
                                 
                                 <InputField
                                     label="Your email"
@@ -455,6 +476,17 @@ export default function FeedbackForm() {
                                     onChange={handleChange}
                                     isFocused={focusedField === 'email'}
                                     onFocus={() => setFocusedField('email')}
+                                    onBlur={() => setFocusedField(null)}
+                                />
+
+                                <InputField
+                                    label="Phone Number"
+                                    name="phone_number"
+                                    type="tel"
+                                    value={formData.phone_number}
+                                    onChange={handleChange}
+                                    isFocused={focusedField === 'phone_number'}
+                                    onFocus={() => setFocusedField('phone_number')}
                                     onBlur={() => setFocusedField(null)}
                                 />
                             </div>
@@ -530,7 +562,7 @@ export default function FeedbackForm() {
                         {/* One-on-One Session Interest */}
                         <div className="pt-0">
                             <SelectGroup
-                                label="Would you be interested in scheduling a one-on-one session to gain access to our exclusive toolkit?"
+                                label="5.	Would you be interested in scheduling a one-on-one session to explore how to build a realistic and scalable cybersecurity strategy roadmap for your organization?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
