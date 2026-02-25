@@ -446,10 +446,10 @@ export default function FeedbackForm() {
                                             <option value="" disabled>Select your sector...</option>
                                             <option value="Banking">Banking</option>
                                             <option value="Fintech">Fintech</option>
-                                            <option value="Government">Government</option>
-                                            <option value="BUMN">BUMN</option>
-                                            <option value="Manufacture">Manufacture</option>
-                                            <option value="Others">Others</option>
+                                            <option value="insurance">insurance</option>
+                                            <option value="Telecommunication">Telecommunication</option>
+                                            <option value="Goverment & BUMN">Goverment & BUMN</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
