@@ -330,7 +330,7 @@ export default function FeedbackForm() {
 
                         <div className="mt-10">
                             <p className="text-gray-400 mb-6">
-                                Congratulations! You are entitled to receive the webinar materials for “PDP 2026: Siap Audit atau Berisiko Sanksi?”, which can be downloaded via the link below.
+                                Congratulations! You are entitled to receive the webinar materials for “Building a Realistic and Scalable Cybersecurity Strategy Roadmap”, which can be downloaded via the link below.
                             </p>
                             <a
                                 href={downloadToken ? `/api/download-presentation?token=${downloadToken}` : '#'}
