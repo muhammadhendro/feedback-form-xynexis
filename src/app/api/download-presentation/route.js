@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const filePath = path.join(process.cwd(), 'secure_docs', '[Slide Webinar January 2026].pdf');
+        const filePath = path.join(process.cwd(), 'secure_docs', 'PPT Webinar Xynexis (feb).pdf');
 
         if (!fs.existsSync(filePath)) {
             console.error('File not found:', filePath);
@@ -110,7 +110,7 @@ export async function GET(request) {
         return new NextResponse(fileBuffer, {
             headers: {
                 'Content-Type': 'application/pdf',
-                'Content-Disposition': 'attachment; filename="Slide Webinar January 2026.pdf"',
+                'Content-Disposition': 'attachment; filename="PPT Webinar Xynexis (feb).pdf"',
             },
         });
 
