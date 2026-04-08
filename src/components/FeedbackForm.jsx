@@ -322,7 +322,7 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for your participation and for taking the time to join the webinar “Building a Realistic and Scalable Cybersecurity Strategy Roadmap”. We hope the materials presented provided valuable insights and practical benefits for the implementation of data protection within your organization. We look forward to seeing you at our next webinar series next month.
+                                Thank you for your participation and for taking the time to join the webinar “Next-Gen SOC : Automasi, Threat Intelligence Lokal, dan Optimasi Operasional.” We hope the session provided valuable insights on how to build and optimize a more efficient Security Operations Center (SOC) through automation, leveraging local threat intelligence, and improving operational effectiveness. We look forward to seeing you at our next webinar series next month.
                                 
                                
                             </p>
@@ -565,7 +565,7 @@ export default function FeedbackForm() {
                         {/* One-on-One Session Interest */}
                         <div className="pt-0">
                             <SelectGroup
-                                label="5.	Would you be interested in scheduling a one-on-one session to explore how to build a realistic and scalable cybersecurity strategy roadmap for your organization?"
+                                label="5.	5.	Would you be interested in scheduling a one-on-one session to explore how to implement a Next-Gen SOC strategy in your organization, including automation, leveraging local threat intelligence, and optimizing security operations?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
