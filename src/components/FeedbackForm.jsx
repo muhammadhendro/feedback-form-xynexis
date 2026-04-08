@@ -471,7 +471,7 @@ export default function FeedbackForm() {
                                 />
                                 
                                 <InputField
-                                    label="Your email"
+                                    label="Email Address"
                                     name="email"
                                     type="email"
                                     required
