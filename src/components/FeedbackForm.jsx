@@ -565,7 +565,7 @@ export default function FeedbackForm() {
                         {/* One-on-One Session Interest */}
                         <div className="pt-0">
                             <SelectGroup
-                                label="5.	5.	Would you be interested in scheduling a one-on-one session to explore how to implement a Next-Gen SOC strategy in your organization, including automation, leveraging local threat intelligence, and optimizing security operations?"
+                                label="5.	Would you be interested in scheduling a one-on-one session to explore how to implement a Next-Gen SOC strategy in your organization, including automation, leveraging local threat intelligence, and optimizing security operations?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
