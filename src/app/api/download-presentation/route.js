@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const fileName = 'Materi_Webinar_April_Axios_Compromised_Membedah_Supply_Chain_Attack.pptx';
+        const fileName = 'Materi_Webinar_April_Axios_Compromised_Membedah_Supply_Chain_Attack.pdf';
         const filePath = path.join(process.cwd(), 'secure_docs', fileName);
 
         if (!fs.existsSync(filePath)) {
@@ -110,7 +110,7 @@ export async function GET(request) {
 
         return new NextResponse(fileBuffer, {
             headers: {
-                'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'Content-Type': 'application/pdf',
                 'Content-Disposition': `attachment; filename="${fileName}"`,
             },
         });
