@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { supabase } from '../utils/supabaseClient';
+import { useEffect, useRef, useState } from 'react';
 
 const InputField = ({ label, name, type = 'text', required = false, value, onChange, isFocused, onFocus, onBlur }) => (
     <div className="w-full group">
@@ -56,23 +55,32 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
     </div>
 );
 
-export default function FeedbackForm() {
-    const [formData, setFormData] = useState({
-        full_name: '',
-        company_name: '',
-        sector: '',
-        position: '',
-        email: '',
-        phone_number: '',
-        satisfaction_overall: '',
-        material_usefulness: '',
-        recommend_colleagues: '',
-        comments: '',
-        one_on_one_session: '',
-        privacy_consent: false,
-        marketing_consent: false
-    });
+const initialFormData = {
+    full_name: '',
+    company_name: '',
+    sector: '',
+    position: '',
+    email: '',
+    phone_number: '',
+    satisfaction_overall: '',
+    material_usefulness: '',
+    understanding_hcrm: '',
+    organization_human_risk_approach: '',
+    recommend_colleagues: '',
+    comments: '',
+    one_on_one_session: '',
+    privacy_consent: false,
+    marketing_consent: false,
+};
 
+const satisfactionOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
+const usefulnessOptions = ['Very Useful', 'Useful', 'Neutral', 'Less Useful', 'Not Useful'];
+const understandingOptions = ['Improved Significantly', 'Improved', 'Stayed the Same', 'Improved Slightly', 'Did Not Improve'];
+const organizationalApproachOptions = ['Yes', 'No', 'Currently Planning', 'Not Sure'];
+const yesNoOptions = ['Yes', 'No'];
+
+export default function FeedbackForm() {
+    const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [focusedField, setFocusedField] = useState(null);
@@ -80,12 +88,11 @@ export default function FeedbackForm() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [downloadToken, setDownloadToken] = useState(null);
 
-    // Auto-resize iframe logic
     const wrapperRef = useRef(null);
+
     useEffect(() => {
         const sendHeight = () => {
             if (wrapperRef.current) {
-                // Add 200px buffer to account for top padding (pt-24/pt-32) and bottom spacing
                 const height = wrapperRef.current.offsetHeight + 200;
                 window.parent.postMessage({ frameHeight: height }, '*');
             }
@@ -108,7 +115,6 @@ export default function FeedbackForm() {
         };
     }, []);
 
-    // Fetch CSRF token on mount
     useEffect(() => {
         const fetchToken = async () => {
             try {
@@ -118,7 +124,7 @@ export default function FeedbackForm() {
                         'Content-Type': 'application/json'
                     }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     setCsrfToken(data.token);
@@ -129,15 +135,13 @@ export default function FeedbackForm() {
                 console.error('Error fetching token:', error);
             }
         };
-        
+
         fetchToken();
     }, []);
 
-
-
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
@@ -146,7 +150,7 @@ export default function FeedbackForm() {
     const validateForm = () => {
         const errors = {};
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const nameRegex = /^[a-zA-Z\s\.\-\']+$/;
+        const nameRegex = /^[a-zA-Z\s\.\-']+$/;
 
         if (!formData.full_name) {
             errors.full_name = 'Full name is required';
@@ -181,16 +185,22 @@ export default function FeedbackForm() {
         }
 
         if (!formData.satisfaction_overall) {
-            errors.satisfaction_overall = 'Please rate your satisfaction';
+            errors.satisfaction_overall = 'Please rate your overall satisfaction';
         }
         if (!formData.material_usefulness) {
-            errors.material_usefulness = 'Please rate material usefulness';
+            errors.material_usefulness = 'Please rate the usefulness of the material';
+        }
+        if (!formData.understanding_hcrm) {
+            errors.understanding_hcrm = 'Please rate your understanding of Human Cyber Risk Management';
+        }
+        if (!formData.organization_human_risk_approach) {
+            errors.organization_human_risk_approach = 'Please select your organization approach to Human Risk';
         }
         if (!formData.recommend_colleagues) {
-            errors.recommend_colleagues = 'Please select if you recommend this';
+            errors.recommend_colleagues = 'Please select whether you would recommend this webinar';
         }
         if (!formData.one_on_one_session) {
-            errors.one_on_one_session = 'Please select an option for 1-on-1 session';
+            errors.one_on_one_session = 'Please select an option for the one-on-one session';
         }
 
         return errors;
@@ -201,7 +211,6 @@ export default function FeedbackForm() {
         setLoading(true);
         setMessage(null);
 
-        // Check if token is ready
         if (!csrfToken) {
             setMessage({ type: 'error', text: 'Security token not ready. Please refresh the page.' });
             setLoading(false);
@@ -217,7 +226,6 @@ export default function FeedbackForm() {
         }
 
         try {
-            // Submit via Next.js API Route
             const response = await fetch('/api/submit-feedback', {
                 method: 'POST',
                 headers: {
@@ -234,6 +242,8 @@ export default function FeedbackForm() {
                         phone_number: formData.phone_number,
                         satisfaction_overall: formData.satisfaction_overall,
                         material_usefulness: formData.material_usefulness,
+                        understanding_hcrm: formData.understanding_hcrm,
+                        organization_human_risk_approach: formData.organization_human_risk_approach,
                         recommend_colleagues: formData.recommend_colleagues,
                         comments: formData.comments,
                         one_on_one_session: formData.one_on_one_session,
@@ -247,39 +257,21 @@ export default function FeedbackForm() {
 
             if (!response.ok) {
                 if (response.status === 429) {
-                    // Rate limit exceeded
                     throw new Error(result.error || 'Please wait before submitting again.');
                 }
                 throw new Error(result.error || 'Submission failed');
             }
 
-            // Success
-            // Success
             setIsSubmitted(true);
             if (result.downloadToken) {
                 setDownloadToken(result.downloadToken);
             }
-            setMessage({ type: 'success', text: '✨ Thank you! Your feedback has been submitted successfully.' });
-            setFormData({
-                full_name: '',
-                company_name: '',
-                sector: '',
-                position: '',
-                email: '',
-                phone_number: '',
-                satisfaction_overall: '',
-                material_usefulness: '',
-                recommend_colleagues: '',
-                comments: '',
-                one_on_one_session: '',
-                privacy_consent: false,
-                marketing_consent: false
-            });
-            
-            // Fetch new token for next submission
+            setMessage({ type: 'success', text: 'Thank you! Your feedback has been submitted successfully.' });
+            setFormData(initialFormData);
+
             const tokenResponse = await fetch('/api/get-feedback-token', {
                 method: 'GET',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json'
                 }
             });
@@ -287,7 +279,6 @@ export default function FeedbackForm() {
                 const tokenData = await tokenResponse.json();
                 setCsrfToken(tokenData.token);
             }
-
         } catch (error) {
             console.error('Error submitting feedback:', error);
             setMessage({ type: 'error', text: error.message || 'Something went wrong. Please try again.' });
@@ -295,9 +286,6 @@ export default function FeedbackForm() {
             setLoading(false);
         }
     };
-
-    const scaleOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
-    const yesNoOptions = ['Yes', 'No'];
 
     if (isSubmitted) {
         return (
@@ -311,7 +299,7 @@ export default function FeedbackForm() {
                                 className="h-32 md:h-48 w-auto"
                             />
                         </div>
-                        
+
                         <div className="mb-6">
                             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-xynexis-green/20 mb-6">
                                 <svg className="h-10 w-10 text-xynexis-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,19 +310,14 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for your participation and for taking the time to join the webinar “Axios Compromised: Analyzing the Supply Chain Attack on Axios” We hope the session provided valuable insights on how to build and optimize a more efficient Security Operations Center (SOC) through automation, leveraging local threat intelligence, and improving operational effectiveness. We look forward to seeing you at our next webinar series next month.
-                                
-                               
+                                Thank you for taking the time to attend the webinar "Human Risk: The Most Overlooked Cyber Threat in the Digital Era" and for sharing your feedback. We hope this session gave you practical insight into why Human Risk should be managed as part of an organization&apos;s cybersecurity strategy, and how Human Cyber Risk Management can help reduce risk, improve compliance, and strengthen business resilience. We look forward to seeing you at the next Xynexis Webinar Series.
                             </p>
                         </div>
 
-                       <div className="mt-10">
-                            <p className="text-gray-400 mb-6">
-                                Congratulations! You are entitled to receive the webinar materials for “Axios Compromised: Analyzing the Supply Chain Attack on Axios”, which can be downloaded via the link below.
-                            </p>
+                        <div className="mt-10">
                             <a
                                 href={downloadToken ? `/api/download-presentation?token=${downloadToken}` : '#'}
-                                target={downloadToken ? "_blank" : "_self"}
+                                target={downloadToken ? '_blank' : '_self'}
                                 className={`inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-xynexis-green to-xynexis-green-hover rounded-xl shadow-lg hover:shadow-xynexis-green/20 hover:scale-[1.02] active:scale-[0.98] group ${!downloadToken ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
                                 <svg className="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -352,16 +335,13 @@ export default function FeedbackForm() {
     return (
         <div className="min-h-screen bg-transparent text-white p-4 pt-24 md:p-8 md:pt-32 flex items-start justify-center">
             <div ref={wrapperRef} className="max-w-4xl w-full">
-                {/* Decorative Elements */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute top-20 left-10 w-72 h-72 bg-xynexis-green/5 rounded-full blur-3xl"></div>
                     <div className="absolute bottom-20 right-10 w-96 h-96 bg-xynexis-green/5 rounded-full blur-3xl"></div>
                 </div>
 
                 <div className="relative bg-xynexis-gray/80 backdrop-blur-sm px-4 pb-6 pt-4 md:px-12 md:pb-12 md:pt-6 md:rounded-2xl md:shadow-2xl md:border border-gray-700/50 animate-fade-in-up">
-                    {/* Header */}
                     <div className="text-center mb-6 pb-4 border-b border-gray-700/50">
-                        {/* Logo */}
                         <div className="flex justify-center mb-4">
                             <img
                                 src="/logo.svg"
@@ -375,7 +355,6 @@ export default function FeedbackForm() {
                         </h1>
                     </div>
 
-                    {/* Message Alert */}
                     {message && (
                         <div className={`p-5 mb-8 rounded-xl border flex items-center gap-3 animate-fade-in-up ${message.type === 'success'
                             ? 'bg-xynexis-green/10 border-xynexis-green/30 text-xynexis-green'
@@ -394,9 +373,7 @@ export default function FeedbackForm() {
                         </div>
                     )}
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Personal Information Section */}
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
@@ -425,7 +402,6 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
 
-                                {/* Sector Dropdown */}
                                 <div className="space-y-2">
                                     <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'sector' ? 'text-xynexis-green' : 'text-gray-400'}`}>
                                         Sector <span className="text-xynexis-green">*</span>
@@ -446,9 +422,9 @@ export default function FeedbackForm() {
                                             <option value="" disabled>Select your sector...</option>
                                             <option value="Banking">Banking</option>
                                             <option value="Fintech">Fintech</option>
-                                            <option value="insurance">insurance</option>
+                                            <option value="Insurance">Insurance</option>
                                             <option value="Telecommunication">Telecommunication</option>
-                                            <option value="Goverment & BUMN">Goverment & BUMN</option>
+                                            <option value="Government & BUMN">Government & BUMN</option>
                                             <option value="Other">Other</option>
                                         </select>
                                         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
@@ -469,7 +445,7 @@ export default function FeedbackForm() {
                                     onFocus={() => setFocusedField('position')}
                                     onBlur={() => setFocusedField(null)}
                                 />
-                                
+
                                 <InputField
                                     label="Email Address"
                                     name="email"
@@ -495,7 +471,6 @@ export default function FeedbackForm() {
                             </div>
                         </div>
 
-                        {/* Experience Section */}
                         <div className="space-y-6 pt-8 border-t border-gray-700/50">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
@@ -504,9 +479,9 @@ export default function FeedbackForm() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <SelectGroup
-                                    label="Overall, how satisfied are you with the Webinar Series event?"
+                                    label="1. Overall, how satisfied are you with this Webinar Series?"
                                     name="satisfaction_overall"
-                                    options={scaleOptions}
+                                    options={satisfactionOptions}
                                     required
                                     value={formData.satisfaction_overall}
                                     onChange={handleChange}
@@ -516,9 +491,9 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="How useful was the material presented at Webinar Series?"
+                                    label='2. How useful was the material presented in the webinar "Human Risk: The Most Overlooked Cyber Threat in the Digital Era"?'
                                     name="material_usefulness"
-                                    options={scaleOptions}
+                                    options={usefulnessOptions}
                                     required
                                     value={formData.material_usefulness}
                                     onChange={handleChange}
@@ -526,12 +501,34 @@ export default function FeedbackForm() {
                                     onFocus={() => setFocusedField('material_usefulness')}
                                     onBlur={() => setFocusedField(null)}
                                 />
+
+                                <SelectGroup
+                                    label="3. After attending this webinar, how would you rate your level of understanding of Human Cyber Risk Management?"
+                                    name="understanding_hcrm"
+                                    options={understandingOptions}
+                                    required
+                                    value={formData.understanding_hcrm}
+                                    onChange={handleChange}
+                                    isFocused={focusedField === 'understanding_hcrm'}
+                                    onFocus={() => setFocusedField('understanding_hcrm')}
+                                    onBlur={() => setFocusedField(null)}
+                                />
+
+                                <SelectGroup
+                                    label="4. Does your organization currently have an approach to measure or manage Human Risk?"
+                                    name="organization_human_risk_approach"
+                                    options={organizationalApproachOptions}
+                                    required
+                                    value={formData.organization_human_risk_approach}
+                                    onChange={handleChange}
+                                    isFocused={focusedField === 'organization_human_risk_approach'}
+                                    onFocus={() => setFocusedField('organization_human_risk_approach')}
+                                    onBlur={() => setFocusedField(null)}
+                                />
                             </div>
 
-
-
                             <SelectGroup
-                                label="Would you like to recommend the Webinar Series to your colleagues?"
+                                label="6. Would you recommend this Webinar Series to your colleagues?"
                                 name="recommend_colleagues"
                                 options={yesNoOptions}
                                 required
@@ -543,10 +540,9 @@ export default function FeedbackForm() {
                             />
                         </div>
 
-                        {/* Comments Section */}
                         <div className="space-y-3 pt-4 border-t border-gray-700/50">
                             <label className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                Please provide us with your comments, questions, or criticism and suggestions regarding the Webinar Series event.
+                                7. Please share your comments, questions, criticism, or suggestions regarding this webinar.
                             </label>
                             <textarea
                                 name="comments"
@@ -558,14 +554,13 @@ export default function FeedbackForm() {
                                 className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
                            focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
                            transition-all duration-300 resize-none hover:border-gray-600 shadow-sm"
-                                placeholder="Share your thoughts with us..."
+                                placeholder="Share your feedback with us..."
                             ></textarea>
                         </div>
 
-                        {/* One-on-One Session Interest */}
                         <div className="pt-0">
                             <SelectGroup
-                                label="Would you be interested in scheduling a one-on-one session to continue the discussion from the webinar “Axios Compromised: Analyzing the Supply Chain Attack on Axios”"
+                                label="8. Would you be interested in scheduling a one-on-one session with the Xynexis team to discuss Human Cyber Risk Management or HumanSec360 further?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
@@ -573,13 +568,11 @@ export default function FeedbackForm() {
                                 isFocused={focusedField === 'one_on_one_session'}
                                 onFocus={() => setFocusedField('one_on_one_session')}
                                 onBlur={() => setFocusedField(null)}
-                                required={true}
+                                required
                             />
                         </div>
 
-                        {/* Consents Group */}
                         <div className="space-y-4 pt-2">
-                            {/* Privacy Consent */}
                             <div>
                                 <label className="flex items-start gap-3 cursor-pointer group">
                                     <div className="relative flex items-center mt-0.5">
@@ -590,11 +583,8 @@ export default function FeedbackForm() {
                                             onChange={handleChange}
                                             className="peer sr-only"
                                         />
-                                        <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
-                                        peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
-                                        transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
-                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] peer-checked:bg-xynexis-green peer-checked:border-xynexis-green transition-all duration-200 shadow-sm group-hover:border-gray-500"></div>
+                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
@@ -604,7 +594,6 @@ export default function FeedbackForm() {
                                 </label>
                             </div>
 
-                            {/* Marketing Consent */}
                             <div>
                                 <label className="flex items-start gap-3 cursor-pointer group">
                                     <div className="relative flex items-center mt-0.5">
@@ -615,11 +604,8 @@ export default function FeedbackForm() {
                                             onChange={handleChange}
                                             className="peer sr-only"
                                         />
-                                        <div className={`w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] 
-                                        peer-checked:bg-xynexis-green peer-checked:border-xynexis-green 
-                                        transition-all duration-200 shadow-sm group-hover:border-gray-500`}></div>
-                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" 
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-5 h-5 rounded border border-gray-600 bg-[#1a1e28] peer-checked:bg-xynexis-green peer-checked:border-xynexis-green transition-all duration-200 shadow-sm group-hover:border-gray-500"></div>
+                                        <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 opacity-0 peer-checked:opacity-100 transition-opacity duration-200 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
@@ -630,14 +616,13 @@ export default function FeedbackForm() {
                             </div>
                         </div>
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={loading}
                             className={`w-full py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 transform 
                          shadow-lg hover:shadow-xynexis-green/20 ${loading
-                                    ? 'bg-gray-600 cursor-not-allowed opacity-75'
-                                    : 'bg-gradient-to-r from-xynexis-green to-xynexis-green-hover hover:scale-[1.02] active:scale-[0.98]'
+                                ? 'bg-gray-600 cursor-not-allowed opacity-75'
+                                : 'bg-gradient-to-r from-xynexis-green to-xynexis-green-hover hover:scale-[1.02] active:scale-[0.98]'
                                 } mb-6`}
                         >
                             {loading ? (
@@ -658,7 +643,6 @@ export default function FeedbackForm() {
                             )}
                         </button>
 
-                        {/* Footer Note */}
                         <div className="pt-12 text-center border-t border-gray-700/50">
                             <p className="text-gray-500 text-sm">
                                 We would love to hear your feedback so that we can provide a better experience at the next{' '}

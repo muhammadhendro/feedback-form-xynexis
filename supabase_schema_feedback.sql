@@ -32,6 +32,10 @@ ALTER TABLE feedback_submissions ADD COLUMN sector text;
 -- Add new column for one-on-one session interest
 ALTER TABLE feedback_submissions ADD COLUMN one_on_one_session text;
 
+-- Add new columns for the latest webinar feedback questions
+ALTER TABLE feedback_submissions ADD COLUMN IF NOT EXISTS understanding_hcrm text;
+ALTER TABLE feedback_submissions ADD COLUMN IF NOT EXISTS organization_human_risk_approach text;
+
 -- Create table for download logs (Rate Limiting)
 create table download_logs (
     id uuid default gen_random_uuid() primary key,

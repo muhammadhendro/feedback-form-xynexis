@@ -2,8 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../utils/supabaseClient';
 import * as XLSX from 'xlsx';
+
+const getResponseBadgeClass = (value) => {
+  const positiveValues = ['Very Satisfied', 'Satisfied', 'Very Useful', 'Useful', 'Improved Significantly', 'Improved', 'Yes'];
+  const neutralValues = ['Neutral', 'Stayed the Same', 'Currently Planning', 'Not Sure'];
+
+  if (positiveValues.includes(value)) {
+    return 'bg-green-500/20 text-green-400';
+  }
+
+  if (neutralValues.includes(value)) {
+    return 'bg-yellow-500/20 text-yellow-400';
+  }
+
+  return 'bg-red-500/20 text-red-400';
+};
 
 export default function AdminDashboard() {
   const [submissions, setSubmissions] = useState([]);
@@ -80,6 +94,8 @@ export default function AdminDashboard() {
       'Phone': sub.phone_number || '-',
       'Satisfaction': sub.satisfaction_overall,
       'Material Usefulness': sub.material_usefulness,
+      'Understanding of HCRM': sub.understanding_hcrm || '-',
+      'Organization Human Risk Approach': sub.organization_human_risk_approach || '-',
       'Recommend': sub.recommend_colleagues,
       '1-on-1 Session': sub.one_on_one_session || '-',
       'Privacy Consent': sub.privacy_consent ? 'Yes' : 'No',
@@ -174,6 +190,8 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Phone</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Satisfaction</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Material</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Understanding</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Org. Approach</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Recommend</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">1-on-1 Session</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-300">Comments</th>
@@ -182,7 +200,7 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-gray-700/50">
                 {filteredSubmissions.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-6 py-12 text-center text-gray-400">
+                    <td colSpan="14" className="px-6 py-12 text-center text-gray-400">
                       No submissions found
                     </td>
                   </tr>
@@ -215,25 +233,23 @@ export default function AdminDashboard() {
                         {sub.phone_number || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          parseInt(sub.satisfaction_overall) >= 4 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : parseInt(sub.satisfaction_overall) >= 3
-                            ? 'bg-yellow-500/20 text-yellow-400'
-                            : 'bg-red-500/20 text-red-400'
-                        }`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getResponseBadgeClass(sub.satisfaction_overall)}`}>
                           {sub.satisfaction_overall}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          parseInt(sub.material_usefulness) >= 4 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : parseInt(sub.material_usefulness) >= 3
-                            ? 'bg-yellow-500/20 text-yellow-400'
-                            : 'bg-red-500/20 text-red-400'
-                        }`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getResponseBadgeClass(sub.material_usefulness)}`}>
                           {sub.material_usefulness}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getResponseBadgeClass(sub.understanding_hcrm || 'Neutral')}`}>
+                          {sub.understanding_hcrm || '-'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getResponseBadgeClass(sub.organization_human_risk_approach || 'Neutral')}`}>
+                          {sub.organization_human_risk_approach || '-'}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-300">

@@ -70,6 +70,14 @@ export async function POST(request) {
         return Response.json({ error: 'Comments too long' }, { status: 400 });
     }
 
+    if (formData.understanding_hcrm?.length > 50) {
+        return Response.json({ error: 'Understanding response is too long' }, { status: 400 });
+    }
+
+    if (formData.organization_human_risk_approach?.length > 50) {
+        return Response.json({ error: 'Organization Human Risk approach response is too long' }, { status: 400 });
+    }
+
     // 1. Validate token
     const { data: tokenData, error: tokenError } = await supabase
       .from('rate_limit_tokens')
@@ -144,6 +152,8 @@ export async function POST(request) {
         phone_number: formData.phone_number?.trim(),
         satisfaction_overall: formData.satisfaction_overall,
         material_usefulness: formData.material_usefulness,
+        understanding_hcrm: formData.understanding_hcrm,
+        organization_human_risk_approach: formData.organization_human_risk_approach,
         recommend_colleagues: formData.recommend_colleagues,
         comments: formData.comments?.trim(),
         one_on_one_session: formData.one_on_one_session,
