@@ -491,7 +491,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label='2. How useful was the material presented in the webinar "Human Risk: The Most Overlooked Cyber Threat in the Digital Era"?'
+                                    label='2. How useful was the material presented in the webinar "Human Risk: Ancaman Siber yang Paling Sering Terabaikan di Era Digital"?'
                                     name="material_usefulness"
                                     options={usefulnessOptions}
                                     required
