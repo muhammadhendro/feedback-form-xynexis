@@ -560,7 +560,7 @@ export default function FeedbackForm() {
 
                         <div className="pt-0">
                             <SelectGroup
-                                label="8. Would you be interested in scheduling a one-on-one session with the Xynexis team to discuss Human Risk: Ancaman Siber yang Paling Sering Terabaikan di Era Digital further?"
+                                label="8. Would you be interested in scheduling a one-on-one session with the Xynexis team to discuss Human Cyber Risk Management or HumanSec360 further?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
