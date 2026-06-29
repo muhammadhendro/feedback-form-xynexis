@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const fileName = 'Materi Webinar 3.pdf';
+        const fileName = 'IGNITE HumanSec360 Webinar 2026 v6.pdf';
         const filePath = path.join(process.cwd(), 'secure_docs', fileName);
 
         if (!fs.existsSync(filePath)) {
