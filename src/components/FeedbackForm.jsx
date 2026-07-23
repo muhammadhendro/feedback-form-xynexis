@@ -1,6 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Sora } from 'next/font/google';
+
+const sectionHeadingFont = Sora({
+    subsets: ['latin'],
+    weight: ['600', '700'],
+});
 
 const InputField = ({ label, name, type = 'text', required = false, value, onChange, isFocused, onFocus, onBlur }) => (
     <div className="w-full group">
@@ -348,7 +354,7 @@ export default function FeedbackForm() {
                         </div>
 
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-                            Formulir Umpan Balik
+                            Feedback Form
                         </h1>
                     </div>
 
@@ -374,7 +380,9 @@ export default function FeedbackForm() {
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">INFORMASI PESERTA</h2>
+                                <h2 className={`${sectionHeadingFont.className} text-lg md:text-xl font-semibold tracking-[0.24em] text-white/95`}>
+                                    INFORMASI PESERTA
+                                </h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -471,7 +479,9 @@ export default function FeedbackForm() {
                         <div className="space-y-6 pt-8 border-t border-gray-700/50">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">PENGALAMAN ANDA</h2>
+                                <h2 className={`${sectionHeadingFont.className} text-lg md:text-xl font-semibold tracking-[0.24em] text-white/95`}>
+                                    PENGALAMAN ANDA
+                                </h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
