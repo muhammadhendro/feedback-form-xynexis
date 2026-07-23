@@ -39,7 +39,7 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
                    transition-all duration-300 appearance-none cursor-pointer hover:border-gray-600 shadow-sm"
                 required={required}
             >
-                <option value="" disabled className="text-gray-500">Select an option...</option>
+                <option value="" disabled className="text-gray-500">Pilih salah satu...</option>
                 {options.map((option) => (
                     <option key={option} value={option} className="bg-[#1a1e28] text-white">
                         {option}
@@ -73,11 +73,10 @@ const initialFormData = {
     marketing_consent: false,
 };
 
-const satisfactionOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
-const usefulnessOptions = ['Very Useful', 'Useful', 'Neutral', 'Less Useful', 'Not Useful'];
-const understandingOptions = ['Improved Significantly', 'Improved', 'Stayed the Same', 'Improved Slightly', 'Did Not Improve'];
-const organizationalApproachOptions = ['Yes', 'No', 'Currently Planning', 'Not Sure'];
-const yesNoOptions = ['Yes', 'No'];
+const satisfactionOptions = ['Sangat Puas', 'Puas', 'Netral', 'Tidak Puas', 'Sangat Tidak Puas'];
+const usefulnessOptions = ['Sangat Bermanfaat', 'Bermanfaat', 'Netral', 'Kurang Bermanfaat', 'Tidak Bermanfaat'];
+const understandingOptions = ['Sangat Meningkat', 'Meningkat', 'Tetap Sama', 'Kurang Meningkat', 'Tidak Meningkat'];
+const yesNoOptions = ['Ya', 'Tidak'];
 
 export default function FeedbackForm() {
     const [formData, setFormData] = useState(initialFormData);
@@ -153,54 +152,51 @@ export default function FeedbackForm() {
         const nameRegex = /^[a-zA-Z\s\.\-']+$/;
 
         if (!formData.full_name) {
-            errors.full_name = 'Full name is required';
+            errors.full_name = 'Nama lengkap wajib diisi';
         } else if (formData.full_name.length < 2) {
-            errors.full_name = 'Name is too short';
+            errors.full_name = 'Nama terlalu singkat';
         } else if (!nameRegex.test(formData.full_name)) {
-            errors.full_name = 'Name contains invalid characters';
+            errors.full_name = 'Nama mengandung karakter yang tidak valid';
         }
 
         if (!formData.company_name) {
-            errors.company_name = 'Company name is required';
+            errors.company_name = 'Nama perusahaan wajib diisi';
         } else if (formData.company_name.length < 2) {
-            errors.company_name = 'Company name is too short';
+            errors.company_name = 'Nama perusahaan terlalu singkat';
         }
 
         if (!formData.sector) {
-            errors.sector = 'Sector is required';
+            errors.sector = 'Industri wajib dipilih';
         }
 
         if (!formData.position) {
-            errors.position = 'Position is required';
+            errors.position = 'Jabatan wajib diisi';
         }
 
         if (!formData.email) {
-            errors.email = 'Email is required';
+            errors.email = 'Alamat email wajib diisi';
         } else if (!emailRegex.test(formData.email)) {
-            errors.email = 'Invalid email address';
+            errors.email = 'Alamat email tidak valid';
         }
 
         if (!formData.privacy_consent) {
-            errors.privacy_consent = 'You must agree to the privacy policy';
+            errors.privacy_consent = 'Anda harus menyetujui kebijakan privasi';
         }
 
         if (!formData.satisfaction_overall) {
-            errors.satisfaction_overall = 'Please rate your overall satisfaction';
+            errors.satisfaction_overall = 'Silakan pilih tingkat kepuasan Anda secara keseluruhan';
         }
         if (!formData.material_usefulness) {
-            errors.material_usefulness = 'Please rate the usefulness of the material';
+            errors.material_usefulness = 'Silakan pilih seberapa bermanfaat materi webinar ini';
         }
         if (!formData.understanding_hcrm) {
-            errors.understanding_hcrm = 'Please rate your understanding of Human Cyber Risk Management';
-        }
-        if (!formData.organization_human_risk_approach) {
-            errors.organization_human_risk_approach = 'Please select your organization approach to Human Risk';
+            errors.understanding_hcrm = 'Silakan pilih tingkat pemahaman Anda mengenai PCI DSS 4.0';
         }
         if (!formData.recommend_colleagues) {
-            errors.recommend_colleagues = 'Please select whether you would recommend this webinar';
+            errors.recommend_colleagues = 'Silakan pilih apakah Anda bersedia merekomendasikan webinar ini';
         }
         if (!formData.one_on_one_session) {
-            errors.one_on_one_session = 'Please select an option for the one-on-one session';
+            errors.one_on_one_session = 'Silakan pilih minat Anda untuk sesi One-on-One';
         }
 
         return errors;
@@ -212,7 +208,7 @@ export default function FeedbackForm() {
         setMessage(null);
 
         if (!csrfToken) {
-            setMessage({ type: 'error', text: 'Security token not ready. Please refresh the page.' });
+            setMessage({ type: 'error', text: 'Token keamanan belum siap. Silakan muat ulang halaman.' });
             setLoading(false);
             return;
         }
@@ -257,16 +253,16 @@ export default function FeedbackForm() {
 
             if (!response.ok) {
                 if (response.status === 429) {
-                    throw new Error(result.error || 'Please wait before submitting again.');
+                    throw new Error(result.error || 'Silakan tunggu sebelum mengirim ulang.');
                 }
-                throw new Error(result.error || 'Submission failed');
+                throw new Error(result.error || 'Pengiriman formulir gagal');
             }
 
             setIsSubmitted(true);
             if (result.downloadToken) {
                 setDownloadToken(result.downloadToken);
             }
-            setMessage({ type: 'success', text: 'Thank you! Your feedback has been submitted successfully.' });
+            setMessage({ type: 'success', text: 'Terima kasih! Umpan balik Anda berhasil dikirim.' });
             setFormData(initialFormData);
 
             const tokenResponse = await fetch('/api/get-feedback-token', {
@@ -281,7 +277,7 @@ export default function FeedbackForm() {
             }
         } catch (error) {
             console.error('Error submitting feedback:', error);
-            setMessage({ type: 'error', text: error.message || 'Something went wrong. Please try again.' });
+            setMessage({ type: 'error', text: error.message || 'Terjadi kesalahan. Silakan coba lagi.' });
         } finally {
             setLoading(false);
         }
@@ -307,10 +303,11 @@ export default function FeedbackForm() {
                                 </svg>
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                Thank You!
+                                Terima Kasih!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for taking the time to attend the webinar "Human Risk: The Most Overlooked Cyber Threat in the Digital Era" and for sharing your feedback. We hope this session gave you practical insight into why Human Risk should be managed as part of an organization&apos;s cybersecurity strategy, and how Human Cyber Risk Management can help reduce risk, improve compliance, and strengthen business resilience. We look forward to seeing you at the next Xynexis Webinar Series.
+                                Terima kasih atas partisipasi dan waktu yang telah Anda luangkan untuk mengikuti webinar{' '}
+                                {'"PCI DSS 4.0 Readiness Assessment: What\'s Changed and How to Prepare?"'}. Kami berharap sesi ini memberikan pemahaman yang lebih komprehensif mengenai perubahan dalam PCI DSS 4.0, dampaknya terhadap organisasi, serta langkah-langkah yang dapat dilakukan untuk mempersiapkan proses asesmen dan audit. Semoga materi yang disampaikan dapat membantu organisasi Anda meningkatkan kepatuhan, memperkuat keamanan data pembayaran, dan menghadapi persyaratan PCI DSS 4.0. Sampai jumpa pada Webinar Series Xynexis berikutnya.
                             </p>
                         </div>
 
@@ -323,7 +320,7 @@ export default function FeedbackForm() {
                                 <svg className="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                Download Presentation Material
+                                Unduh Materi Presentasi
                             </a>
                         </div>
                     </div>
@@ -351,7 +348,7 @@ export default function FeedbackForm() {
                         </div>
 
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-                            Feedback Form
+                            Formulir Umpan Balik
                         </h1>
                     </div>
 
@@ -377,12 +374,12 @@ export default function FeedbackForm() {
                         <div className="space-y-6">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">Personal Information</h2>
+                                <h2 className="text-xl font-bold text-white">INFORMASI PESERTA</h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <InputField
-                                    label="Full Name"
+                                    label="1. Nama Lengkap:"
                                     name="full_name"
                                     required
                                     value={formData.full_name}
@@ -392,7 +389,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="Company Name"
+                                    label="2. Nama Perusahaan:"
                                     name="company_name"
                                     required
                                     value={formData.company_name}
@@ -404,7 +401,7 @@ export default function FeedbackForm() {
 
                                 <div className="space-y-2">
                                     <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'sector' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                        Sector <span className="text-xynexis-green">*</span>
+                                        3. Industri: <span className="text-xynexis-green">*</span>
                                     </label>
                                     <div className="relative">
                                         <select
@@ -419,13 +416,13 @@ export default function FeedbackForm() {
                                                 ${formData.sector ? 'text-white' : 'text-gray-500'}
                                                 ${focusedField === 'sector' ? 'border-xynexis-green' : 'border-gray-700'}`}
                                         >
-                                            <option value="" disabled>Select your sector...</option>
-                                            <option value="Banking">Banking</option>
+                                            <option value="" disabled>Pilih industri...</option>
+                                            <option value="Perbankan">Perbankan</option>
                                             <option value="Fintech">Fintech</option>
-                                            <option value="Insurance">Insurance</option>
-                                            <option value="Telecommunication">Telecommunication</option>
-                                            <option value="Government & BUMN">Government & BUMN</option>
-                                            <option value="Other">Other</option>
+                                            <option value="Asuransi">Asuransi</option>
+                                            <option value="Telekomunikasi">Telekomunikasi</option>
+                                            <option value="Pemerintah & BUMN">Pemerintah & BUMN</option>
+                                            <option value="Lainnya">Lainnya</option>
                                         </select>
                                         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -436,7 +433,7 @@ export default function FeedbackForm() {
                                 </div>
 
                                 <InputField
-                                    label="Position"
+                                    label="4. Jabatan:"
                                     name="position"
                                     required
                                     value={formData.position}
@@ -447,7 +444,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <InputField
-                                    label="Email Address"
+                                    label="5. Alamat Email:"
                                     name="email"
                                     type="email"
                                     required
@@ -459,7 +456,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <InputField
-                                    label="Phone Number"
+                                    label="6. Nomor Telepon:"
                                     name="phone_number"
                                     type="tel"
                                     value={formData.phone_number}
@@ -474,12 +471,12 @@ export default function FeedbackForm() {
                         <div className="space-y-6 pt-8 border-t border-gray-700/50">
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
-                                <h2 className="text-xl font-bold text-white">Your Experience</h2>
+                                <h2 className="text-xl font-bold text-white">PENGALAMAN ANDA</h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <SelectGroup
-                                    label="1. Overall, how satisfied are you with this Webinar Series?"
+                                    label="1. Secara keseluruhan, seberapa puas Anda terhadap penyelenggaraan Webinar Series ini?"
                                     name="satisfaction_overall"
                                     options={satisfactionOptions}
                                     required
@@ -491,7 +488,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label='2. How useful was the material presented in the webinar "Human Risk: Ancaman Siber yang Paling Sering Terabaikan di Era Digital"?'
+                                    label={"2. Seberapa bermanfaat materi yang disampaikan dalam webinar \"PCI DSS 4.0 Readiness Assessment: What's Changed and How to Prepare?\""}
                                     name="material_usefulness"
                                     options={usefulnessOptions}
                                     required
@@ -503,7 +500,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="3. After attending this webinar, how would you rate your level of understanding of Human Cyber Risk Management?"
+                                    label="3. Setelah mengikuti webinar ini, bagaimana tingkat pemahaman Anda mengenai PCI DSS 4.0?"
                                     name="understanding_hcrm"
                                     options={understandingOptions}
                                     required
@@ -515,34 +512,22 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="4. Does your organization currently have an approach to measure or manage Human Risk?"
-                                    name="organization_human_risk_approach"
-                                    options={organizationalApproachOptions}
+                                    label="4. Apakah Anda bersedia merekomendasikan Webinar Series ini kepada rekan kerja?"
+                                    name="recommend_colleagues"
+                                    options={yesNoOptions}
                                     required
-                                    value={formData.organization_human_risk_approach}
+                                    value={formData.recommend_colleagues}
                                     onChange={handleChange}
-                                    isFocused={focusedField === 'organization_human_risk_approach'}
-                                    onFocus={() => setFocusedField('organization_human_risk_approach')}
+                                    isFocused={focusedField === 'recommend_colleagues'}
+                                    onFocus={() => setFocusedField('recommend_colleagues')}
                                     onBlur={() => setFocusedField(null)}
                                 />
                             </div>
-
-                            <SelectGroup
-                                label="6. Would you recommend this Webinar Series to your colleagues?"
-                                name="recommend_colleagues"
-                                options={yesNoOptions}
-                                required
-                                value={formData.recommend_colleagues}
-                                onChange={handleChange}
-                                isFocused={focusedField === 'recommend_colleagues'}
-                                onFocus={() => setFocusedField('recommend_colleagues')}
-                                onBlur={() => setFocusedField(null)}
-                            />
                         </div>
 
                         <div className="space-y-3 pt-4 border-t border-gray-700/50">
                             <label className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                7. Please share your comments, questions, criticism, or suggestions regarding this webinar.
+                                5. Mohon berikan komentar, pertanyaan, kritik, atau saran Anda terkait penyelenggaraan webinar ini.
                             </label>
                             <textarea
                                 name="comments"
@@ -554,13 +539,13 @@ export default function FeedbackForm() {
                                 className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
                            focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
                            transition-all duration-300 resize-none hover:border-gray-600 shadow-sm"
-                                placeholder="Share your feedback with us..."
+                                placeholder="Tuliskan jawaban Anda di sini..."
                             ></textarea>
                         </div>
 
                         <div className="pt-0">
                             <SelectGroup
-                                label="8. Would you be interested in scheduling a one-on-one session with the Xynexis team to discuss Human Cyber Risk Management or HumanSec360 further?"
+                                label="6. Apakah Anda tertarik untuk menjadwalkan sesi One-on-One diskusi lebih lanjut bersama tim Xynexis terkait PCI DSS 4.0 Readiness Assessment?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
@@ -631,11 +616,11 @@ export default function FeedbackForm() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Processing...
+                                    Memproses...
                                 </span>
                             ) : (
                                 <span className="flex items-center justify-center gap-2">
-                                    Submit Feedback
+                                    Kirim Umpan Balik
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
@@ -645,8 +630,8 @@ export default function FeedbackForm() {
 
                         <div className="pt-12 text-center border-t border-gray-700/50">
                             <p className="text-gray-500 text-sm">
-                                We would love to hear your feedback so that we can provide a better experience at the next{' '}
-                                <span className="text-xynexis-green font-semibold">Webinar Series</span>.
+                                Kami sangat menghargai umpan balik Anda agar dapat memberikan pengalaman yang lebih baik pada{' '}
+                                <span className="text-xynexis-green font-semibold">Webinar Series</span> berikutnya.
                             </p>
                         </div>
                     </form>
