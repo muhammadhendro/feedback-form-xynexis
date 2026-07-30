@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const fileName = 'Webinar Series Xynexis - Juli 2026_.pdf';
+        const fileName = 'Xynexis Series Webinar_PCI DSS_Juli 2026_.pdf';
         const filePath = path.join(process.cwd(), 'secure_docs', fileName);
 
         if (!fs.existsSync(filePath)) {
