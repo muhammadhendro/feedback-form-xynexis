@@ -45,7 +45,7 @@ const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus
                    transition-all duration-300 appearance-none cursor-pointer hover:border-gray-600 shadow-sm"
                 required={required}
             >
-                <option value="" disabled className="text-gray-500">Pilih salah satu...</option>
+                <option value="" disabled className="text-gray-500">Select an option...</option>
                 {options.map((option) => (
                     <option key={option} value={option} className="bg-[#1a1e28] text-white">
                         {option}
@@ -79,10 +79,10 @@ const initialFormData = {
     marketing_consent: false,
 };
 
-const satisfactionOptions = ['Sangat Puas', 'Puas', 'Netral', 'Tidak Puas', 'Sangat Tidak Puas'];
-const usefulnessOptions = ['Sangat Bermanfaat', 'Bermanfaat', 'Netral', 'Kurang Bermanfaat', 'Tidak Bermanfaat'];
-const understandingOptions = ['Sangat Meningkat', 'Meningkat', 'Tetap Sama', 'Kurang Meningkat', 'Tidak Meningkat'];
-const yesNoOptions = ['Ya', 'Tidak'];
+const satisfactionOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
+const usefulnessOptions = ['Very Useful', 'Useful', 'Neutral', 'Not Very Useful', 'Not Useful'];
+const understandingOptions = ['Significantly Improved', 'Improved', 'Stayed the Same', 'Slightly Improved', 'Not Improved'];
+const yesNoOptions = ['Yes', 'No'];
 
 export default function FeedbackForm() {
     const [formData, setFormData] = useState(initialFormData);
@@ -158,51 +158,51 @@ export default function FeedbackForm() {
         const nameRegex = /^[a-zA-Z\s\.\-']+$/;
 
         if (!formData.full_name) {
-            errors.full_name = 'Nama lengkap wajib diisi';
+            errors.full_name = 'Full name is required';
         } else if (formData.full_name.length < 2) {
-            errors.full_name = 'Nama terlalu singkat';
+            errors.full_name = 'Full name is too short';
         } else if (!nameRegex.test(formData.full_name)) {
-            errors.full_name = 'Nama mengandung karakter yang tidak valid';
+            errors.full_name = 'Full name contains invalid characters';
         }
 
         if (!formData.company_name) {
-            errors.company_name = 'Nama perusahaan wajib diisi';
+            errors.company_name = 'Company name is required';
         } else if (formData.company_name.length < 2) {
-            errors.company_name = 'Nama perusahaan terlalu singkat';
+            errors.company_name = 'Company name is too short';
         }
 
         if (!formData.sector) {
-            errors.sector = 'Industri wajib dipilih';
+            errors.sector = 'Please select an industry';
         }
 
         if (!formData.position) {
-            errors.position = 'Jabatan wajib diisi';
+            errors.position = 'Job title is required';
         }
 
         if (!formData.email) {
-            errors.email = 'Alamat email wajib diisi';
+            errors.email = 'Email address is required';
         } else if (!emailRegex.test(formData.email)) {
-            errors.email = 'Alamat email tidak valid';
+            errors.email = 'Email address is invalid';
         }
 
         if (!formData.privacy_consent) {
-            errors.privacy_consent = 'Anda harus menyetujui kebijakan privasi';
+            errors.privacy_consent = 'You must agree to the Privacy Notice';
         }
 
         if (!formData.satisfaction_overall) {
-            errors.satisfaction_overall = 'Silakan pilih tingkat kepuasan Anda secara keseluruhan';
+            errors.satisfaction_overall = 'Please select your overall satisfaction level';
         }
         if (!formData.material_usefulness) {
-            errors.material_usefulness = 'Silakan pilih seberapa bermanfaat materi webinar ini';
+            errors.material_usefulness = 'Please select how useful you found the webinar content';
         }
         if (!formData.understanding_hcrm) {
-            errors.understanding_hcrm = 'Silakan pilih tingkat pemahaman Anda mengenai PCI DSS 4.0';
+            errors.understanding_hcrm = 'Please rate your understanding of ISO/IEC 27001:2022 and ISMS';
         }
         if (!formData.recommend_colleagues) {
-            errors.recommend_colleagues = 'Silakan pilih apakah Anda bersedia merekomendasikan webinar ini';
+            errors.recommend_colleagues = 'Please select whether you would recommend this webinar';
         }
         if (!formData.one_on_one_session) {
-            errors.one_on_one_session = 'Silakan pilih minat Anda untuk sesi One-on-One';
+            errors.one_on_one_session = 'Please select whether you are interested in a one-on-one discussion';
         }
 
         return errors;
@@ -214,7 +214,7 @@ export default function FeedbackForm() {
         setMessage(null);
 
         if (!csrfToken) {
-            setMessage({ type: 'error', text: 'Token keamanan belum siap. Silakan muat ulang halaman.' });
+            setMessage({ type: 'error', text: 'Security token is not ready yet. Please refresh the page.' });
             setLoading(false);
             return;
         }
@@ -259,16 +259,16 @@ export default function FeedbackForm() {
 
             if (!response.ok) {
                 if (response.status === 429) {
-                    throw new Error(result.error || 'Silakan tunggu sebelum mengirim ulang.');
+                    throw new Error(result.error || 'Please wait before submitting again.');
                 }
-                throw new Error(result.error || 'Pengiriman formulir gagal');
+                throw new Error(result.error || 'Form submission failed');
             }
 
             setIsSubmitted(true);
             if (result.downloadToken) {
                 setDownloadToken(result.downloadToken);
             }
-            setMessage({ type: 'success', text: 'Terima kasih! Umpan balik Anda berhasil dikirim.' });
+            setMessage({ type: 'success', text: 'Thank you! Your feedback has been submitted successfully.' });
             setFormData(initialFormData);
 
             const tokenResponse = await fetch('/api/get-feedback-token', {
@@ -283,7 +283,7 @@ export default function FeedbackForm() {
             }
         } catch (error) {
             console.error('Error submitting feedback:', error);
-            setMessage({ type: 'error', text: error.message || 'Terjadi kesalahan. Silakan coba lagi.' });
+            setMessage({ type: 'error', text: error.message || 'Something went wrong. Please try again.' });
         } finally {
             setLoading(false);
         }
@@ -309,11 +309,14 @@ export default function FeedbackForm() {
                                 </svg>
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                Terima Kasih!
+                                Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Terima kasih atas partisipasi dan waktu yang telah Anda luangkan untuk mengikuti webinar{' '}
-                                {'"PCI DSS 4.0 Readiness Assessment: What\'s Changed and How to Prepare?"'}. Kami berharap sesi ini memberikan pemahaman yang lebih komprehensif mengenai perubahan dalam PCI DSS 4.0, dampaknya terhadap organisasi, serta langkah-langkah yang dapat dilakukan untuk mempersiapkan proses asesmen dan audit. Semoga materi yang disampaikan dapat membantu organisasi Anda meningkatkan kepatuhan, memperkuat keamanan data pembayaran, dan menghadapi persyaratan PCI DSS 4.0. Sampai jumpa pada Webinar Series Xynexis berikutnya.
+                                Thank you for taking the time to join our webinar, "ISO27001:2022 & Framework
+                                Compliance: Building an Effective and Measurable ISMS." We hope the session
+                                provided useful insights into ISO/IEC 27001:2022, risk-based ISMS implementation,
+                                and ways to measure and improve the effectiveness of information security controls.
+                                We look forward to seeing you at the next Xynexis Webinar Series.
                             </p>
                         </div>
 
@@ -326,7 +329,7 @@ export default function FeedbackForm() {
                                 <svg className="w-6 h-6 mr-3 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
-                                Unduh Materi Presentasi
+                                Download Presentation Materials
                             </a>
                         </div>
                     </div>
@@ -381,13 +384,13 @@ export default function FeedbackForm() {
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
                                 <h2 className={`${sectionHeadingFont.className} text-lg md:text-xl font-semibold tracking-[0.24em] text-white/95`}>
-                                    INFORMASI PESERTA
+                                    PARTICIPANT INFORMATION
                                 </h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <InputField
-                                    label="1. Nama Lengkap:"
+                                    label="1. Full Name:"
                                     name="full_name"
                                     required
                                     value={formData.full_name}
@@ -397,7 +400,7 @@ export default function FeedbackForm() {
                                     onBlur={() => setFocusedField(null)}
                                 />
                                 <InputField
-                                    label="2. Nama Perusahaan:"
+                                    label="2. Company Name:"
                                     name="company_name"
                                     required
                                     value={formData.company_name}
@@ -409,7 +412,7 @@ export default function FeedbackForm() {
 
                                 <div className="space-y-2">
                                     <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'sector' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                        3. Industri: <span className="text-xynexis-green">*</span>
+                                        3. Industry: <span className="text-xynexis-green">*</span>
                                     </label>
                                     <div className="relative">
                                         <select
@@ -424,13 +427,13 @@ export default function FeedbackForm() {
                                                 ${formData.sector ? 'text-white' : 'text-gray-500'}
                                                 ${focusedField === 'sector' ? 'border-xynexis-green' : 'border-gray-700'}`}
                                         >
-                                            <option value="" disabled>Pilih industri...</option>
-                                            <option value="Perbankan">Perbankan</option>
+                                            <option value="" disabled>Select industry...</option>
+                                            <option value="Banking">Banking</option>
                                             <option value="Fintech">Fintech</option>
-                                            <option value="Asuransi">Asuransi</option>
-                                            <option value="Telekomunikasi">Telekomunikasi</option>
-                                            <option value="Pemerintah & BUMN">Pemerintah & BUMN</option>
-                                            <option value="Lainnya">Lainnya</option>
+                                            <option value="Insurance">Insurance</option>
+                                            <option value="Telecommunications">Telecommunications</option>
+                                            <option value="Government & State-Owned Enterprises">Government & State-Owned Enterprises</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                                             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -441,7 +444,7 @@ export default function FeedbackForm() {
                                 </div>
 
                                 <InputField
-                                    label="4. Jabatan:"
+                                    label="4. Job Title:"
                                     name="position"
                                     required
                                     value={formData.position}
@@ -452,7 +455,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <InputField
-                                    label="5. Alamat Email:"
+                                    label="5. Email Address:"
                                     name="email"
                                     type="email"
                                     required
@@ -464,7 +467,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <InputField
-                                    label="6. Nomor Telepon:"
+                                    label="6. Phone Number:"
                                     name="phone_number"
                                     type="tel"
                                     value={formData.phone_number}
@@ -480,13 +483,13 @@ export default function FeedbackForm() {
                             <div className="flex items-center gap-3 mb-6">
                                 <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
                                 <h2 className={`${sectionHeadingFont.className} text-lg md:text-xl font-semibold tracking-[0.24em] text-white/95`}>
-                                    PENGALAMAN ANDA
+                                    YOUR EXPERIENCE
                                 </h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <SelectGroup
-                                    label="1. Secara keseluruhan, seberapa puas Anda terhadap penyelenggaraan Webinar Series ini?"
+                                    label="1. Overall, how satisfied were you with the webinar?"
                                     name="satisfaction_overall"
                                     options={satisfactionOptions}
                                     required
@@ -498,7 +501,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label={"2. Seberapa bermanfaat materi yang disampaikan dalam webinar \"PCI DSS 4.0 Readiness Assessment: What's Changed and How to Prepare?\""}
+                                    label={'2. How useful did you find the content presented in the webinar "ISO27001:2022 & Framework Compliance: Building an Effective and Measurable ISMS"?'}
                                     name="material_usefulness"
                                     options={usefulnessOptions}
                                     required
@@ -510,7 +513,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="3. Setelah mengikuti webinar ini, bagaimana tingkat pemahaman Anda mengenai PCI DSS 4.0?"
+                                    label="3. After attending this webinar, how would you rate your understanding of ISO/IEC 27001:2022 and building an effective ISMS?"
                                     name="understanding_hcrm"
                                     options={understandingOptions}
                                     required
@@ -522,7 +525,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="4. Apakah Anda bersedia merekomendasikan Webinar Series ini kepada rekan kerja?"
+                                    label="4. Would you recommend this Webinar Series to your colleagues?"
                                     name="recommend_colleagues"
                                     options={yesNoOptions}
                                     required
@@ -537,7 +540,7 @@ export default function FeedbackForm() {
 
                         <div className="space-y-3 pt-4 border-t border-gray-700/50">
                             <label className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                5. Mohon berikan komentar, pertanyaan, kritik, atau saran Anda terkait penyelenggaraan webinar ini.
+                                5. Please share your comments, questions, or suggestions about the webinar.
                             </label>
                             <textarea
                                 name="comments"
@@ -549,13 +552,13 @@ export default function FeedbackForm() {
                                 className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
                            focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
                            transition-all duration-300 resize-none hover:border-gray-600 shadow-sm"
-                                placeholder="Tuliskan jawaban Anda di sini..."
+                                placeholder="Write your response here..."
                             ></textarea>
                         </div>
 
                         <div className="pt-0">
                             <SelectGroup
-                                label="6. Apakah Anda tertarik untuk menjadwalkan sesi One-on-One diskusi lebih lanjut bersama tim Xynexis terkait PCI DSS 4.0 Readiness Assessment?"
+                                label="6. Would you be interested in having a one-on-one discussion with the Xynexis team to learn more about ISO/IEC 27001:2022, ISMS, and Framework Compliance?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
@@ -626,7 +629,7 @@ export default function FeedbackForm() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Memproses...
+                                    Processing...
                                 </span>
                             ) : (
                                 <span className="flex items-center justify-center gap-2">
@@ -640,8 +643,8 @@ export default function FeedbackForm() {
 
                         <div className="pt-12 text-center border-t border-gray-700/50">
                             <p className="text-gray-500 text-sm">
-                                Kami sangat menghargai umpan balik Anda agar dapat memberikan pengalaman yang lebih baik pada{' '}
-                                <span className="text-xynexis-green font-semibold">Webinar Series</span> berikutnya.
+                                We look forward to seeing you at the next{' '}
+                                <span className="text-xynexis-green font-semibold">Xynexis Webinar Series</span>.
                             </p>
                         </div>
                     </form>
