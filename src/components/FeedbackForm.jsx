@@ -320,7 +320,7 @@ export default function FeedbackForm() {
                             </p>
                         </div>
 
-                        {/* <div className="mt-10">
+                        <div className="mt-10">
                             <a
                                 href={downloadToken ? `/api/download-presentation?token=${downloadToken}` : '#'}
                                 target={downloadToken ? '_blank' : '_self'}
@@ -331,7 +331,7 @@ export default function FeedbackForm() {
                                 </svg>
                                 Download Presentation Materials
                             </a>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>
