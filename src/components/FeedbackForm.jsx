@@ -196,7 +196,7 @@ export default function FeedbackForm() {
             errors.material_usefulness = 'Please select how useful you found the webinar content';
         }
         if (!formData.understanding_hcrm) {
-            errors.understanding_hcrm = 'Please rate your understanding of ISO/IEC 27001:2022 and ISMS';
+            errors.understanding_hcrm = 'Please rate your understanding of IT Governance Maturity';
         }
         if (!formData.recommend_colleagues) {
             errors.recommend_colleagues = 'Please select whether you would recommend this webinar';
@@ -312,10 +312,10 @@ export default function FeedbackForm() {
                                 Thank You!
                             </h2>
                             <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-                                Thank you for taking the time to join our webinar, "ISO27001:2022 & Framework
-                                Compliance: Building an Effective and Measurable ISMS." We hope the session
-                                provided useful insights into ISO/IEC 27001:2022, risk-based ISMS implementation,
-                                and ways to measure and improve the effectiveness of information security controls.
+                                Thank you for taking the time to join our webinar, "IT Governance Maturity: The
+                                COBIT 2019 Framework for Measurable Digital Transformation." We hope the session
+                                provided useful insights into the COBIT 2019 framework, IT governance maturity
+                                evaluation, and ways to align IT capabilities with strategic digital transformation goals.
                                 We look forward to seeing you at the next Xynexis Webinar Series.
                             </p>
                         </div>
@@ -501,7 +501,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label={'2. How useful did you find the content presented in the webinar "ISO27001:2022 & Framework Compliance: Building an Effective and Measurable ISMS"?'}
+                                    label={'2. How useful did you find the content presented in the webinar "IT Governance Maturity: The COBIT 2019 Framework for Measurable Digital Transformation"?'}
                                     name="material_usefulness"
                                     options={usefulnessOptions}
                                     required
@@ -513,7 +513,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="3. After attending this webinar, how would you rate your understanding of ISO/IEC 27001:2022 and building an effective ISMS?"
+                                    label="3. After attending this webinar, how would you rate your understanding of IT Governance Maturity?"
                                     name="understanding_hcrm"
                                     options={understandingOptions}
                                     required
@@ -558,7 +558,7 @@ export default function FeedbackForm() {
 
                         <div className="pt-0">
                             <SelectGroup
-                                label="6. Would you be interested in having a one-on-one discussion with the Xynexis team to learn more about ISO/IEC 27001:2022, ISMS, and Framework Compliance?"
+                                label="6. Would you be interested in having a one-on-one discussion with the Xynexis team to learn more about IT Governance Maturity?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
