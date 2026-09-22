@@ -94,7 +94,7 @@ export default function AdminDashboard() {
       'Phone': sub.phone_number || '-',
       'Satisfaction': sub.satisfaction_overall,
       'Material Usefulness': sub.material_usefulness,
-      'Understanding of HCRM': sub.understanding_hcrm || '-',
+      'Understanding of IT GRC': sub.understanding_hcrm || '-',
       'Organization Human Risk Approach': sub.organization_human_risk_approach || '-',
       'Recommend': sub.recommend_colleagues,
       '1-on-1 Session': sub.one_on_one_session || '-',
