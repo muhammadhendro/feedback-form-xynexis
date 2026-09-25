@@ -98,7 +98,7 @@ export async function GET(request) {
         // --- END RATE LIMITING ---
 
         // Token Valid - Serve File
-        const fileName = 'ISO 270012022 & FRAMEWORK COMPLIANCE.pdf';
+        const fileName = 'GRC Unplugged Smart Assessment, Fast GRC Implementation  with Agentic AI.pdf';
         const filePath = path.join(process.cwd(), 'secure_docs', fileName);
 
         if (!fs.existsSync(filePath)) {
