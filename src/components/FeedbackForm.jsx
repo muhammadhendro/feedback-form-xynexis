@@ -310,13 +310,10 @@ export default function FeedbackForm() {
                             </h2>
                             <div className="space-y-4 text-gray-300 text-lg md:text-xl leading-relaxed">
                                 <p>
-                                    Thank you for taking the time to join our webinar, “GRC Unplugged: Smart Assessment,
-                                    Fast GRC Implementation with Agentic AI”
+                                   Thank you for taking the time to join our webinar, "AI-Driven Threats, Stronger Governance: Securing Critical Infrastructure in the Financial Ecosystem."
                                 </p>
                                 <p>
-                                    We hope the session provided useful insights into the GRC Unplugged: Smart Assessment,
-                                    Fast GRC Implementation with Agentic AI and ways to align IT capabilities with strategic
-                                    digital transformation goals.
+                                    We hope the session provided valuable insights into emerging AI-driven cyber threats, the importance of strengthening security governance, and practical strategies for protecting critical infrastructure within the financial ecosystem.
                                 </p>
                                 <p>
                                     We look forward to seeing you at the next{' '}
