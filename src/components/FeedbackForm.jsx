@@ -2,64 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Sora } from 'next/font/google';
+import { ParticipantInformation, SelectGroup } from './FeedbackFields';
 
 const sectionHeadingFont = Sora({
     subsets: ['latin'],
     weight: ['600', '700'],
 });
-
-const InputField = ({ label, name, type = 'text', required = false, value, onChange, isFocused, onFocus, onBlur }) => (
-    <div className="w-full group">
-        <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${isFocused ? 'text-xynexis-green' : 'text-gray-400'}`}>
-            {label} {required && <span className="text-xynexis-green">*</span>}
-        </label>
-        <input
-            type={type}
-            name={name}
-            value={value}
-            onChange={onChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white placeholder-gray-500 
-                 focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
-                 transition-all duration-300 hover:border-gray-600 shadow-sm"
-            required={required}
-        />
-    </div>
-);
-
-const SelectGroup = ({ label, name, options, value, onChange, isFocused, onFocus, onBlur, required = false }) => (
-    <div className="w-full group">
-        <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${isFocused ? 'text-xynexis-green' : 'text-gray-400'}`}>
-            {label} {required && <span className="text-xynexis-green">*</span>}
-        </label>
-        <div className="relative">
-            <select
-                name={name}
-                value={value}
-                onChange={onChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                className="w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border border-gray-700 text-white 
-                   focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20 
-                   transition-all duration-300 appearance-none cursor-pointer hover:border-gray-600 shadow-sm"
-                required={required}
-            >
-                <option value="" disabled className="text-gray-500">Select an option...</option>
-                {options.map((option) => (
-                    <option key={option} value={option} className="bg-[#1a1e28] text-white">
-                        {option}
-                    </option>
-                ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
-        </div>
-    </div>
-);
 
 const initialFormData = {
     full_name: '',
@@ -70,8 +18,6 @@ const initialFormData = {
     phone_number: '',
     satisfaction_overall: '',
     material_usefulness: '',
-    understanding_hcrm: '',
-    organization_human_risk_approach: '',
     recommend_colleagues: '',
     comments: '',
     one_on_one_session: '',
@@ -81,7 +27,6 @@ const initialFormData = {
 
 const satisfactionOptions = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
 const usefulnessOptions = ['Very Useful', 'Useful', 'Neutral', 'Not Very Useful', 'Not Useful'];
-const understandingOptions = ['Significantly Improved', 'Improved', 'Stayed the Same', 'Slightly Improved', 'Not Improved'];
 const yesNoOptions = ['Yes', 'No'];
 
 export default function FeedbackForm() {
@@ -192,9 +137,6 @@ export default function FeedbackForm() {
         if (!formData.satisfaction_overall) {
             errors.satisfaction_overall = 'Please select your overall satisfaction level';
         }
-        if (!formData.understanding_hcrm) {
-            errors.understanding_hcrm = 'Please rate your understanding of IT GRC';
-        }
         if (!formData.recommend_colleagues) {
             errors.recommend_colleagues = 'Please select whether you would recommend this webinar';
         }
@@ -241,8 +183,6 @@ export default function FeedbackForm() {
                         phone_number: formData.phone_number,
                         satisfaction_overall: formData.satisfaction_overall,
                         material_usefulness: formData.material_usefulness,
-                        understanding_hcrm: formData.understanding_hcrm,
-                        organization_human_risk_approach: formData.organization_human_risk_approach,
                         recommend_colleagues: formData.recommend_colleagues,
                         comments: formData.comments,
                         one_on_one_session: formData.one_on_one_session,
@@ -310,7 +250,7 @@ export default function FeedbackForm() {
                             </h2>
                             <div className="space-y-4 text-gray-300 text-lg md:text-xl leading-relaxed">
                                 <p>
-                                   Thank you for taking the time to join our webinar, "AI-Driven Threats, Stronger Governance: Securing Critical Infrastructure in the Financial Ecosystem."
+                                   Thank you for taking the time to join our webinar, &quot;AI-Driven Threats, Stronger Governance: Securing Critical Infrastructure in the Financial Ecosystem.&quot;
                                 </p>
                                 <p>
                                     We hope the session provided valuable insights into emerging AI-driven cyber threats, the importance of strengthening security governance, and practical strategies for protecting critical infrastructure within the financial ecosystem.
@@ -382,104 +322,13 @@ export default function FeedbackForm() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-1 h-8 bg-gradient-to-b from-xynexis-green to-xynexis-green/50 rounded-full"></div>
-                                <h2 className={`${sectionHeadingFont.className} text-lg md:text-xl font-semibold tracking-[0.24em] text-white/95`}>
-                                    PARTICIPANT INFORMATION
-                                </h2>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <InputField
-                                    label="1. Full Name:"
-                                    name="full_name"
-                                    required
-                                    value={formData.full_name}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'full_name'}
-                                    onFocus={() => setFocusedField('full_name')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-                                <InputField
-                                    label="2. Company Name:"
-                                    name="company_name"
-                                    required
-                                    value={formData.company_name}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'company_name'}
-                                    onFocus={() => setFocusedField('company_name')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-
-                                <div className="space-y-2">
-                                    <label className={`block text-sm font-semibold mb-2 transition-colors duration-200 ${focusedField === 'sector' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                        3. Industry: <span className="text-xynexis-green">*</span>
-                                    </label>
-                                    <div className="relative">
-                                        <select
-                                            name="sector"
-                                            value={formData.sector}
-                                            onChange={handleChange}
-                                            onFocus={() => setFocusedField('sector')}
-                                            onBlur={() => setFocusedField(null)}
-                                            className={`w-full px-4 py-3.5 rounded-lg bg-[#1a1e28] border text-white appearance-none
-                                                focus:outline-none focus:border-xynexis-green focus:ring-2 focus:ring-xynexis-green/20
-                                                transition-all duration-300 hover:border-gray-600 shadow-sm cursor-pointer
-                                                ${formData.sector ? 'text-white' : 'text-gray-500'}
-                                                ${focusedField === 'sector' ? 'border-xynexis-green' : 'border-gray-700'}`}
-                                        >
-                                            <option value="" disabled>Select industry...</option>
-                                            <option value="Banking">Banking</option>
-                                            <option value="Fintech">Fintech</option>
-                                            <option value="Insurance">Insurance</option>
-                                            <option value="Telecommunications">Telecommunications</option>
-                                            <option value="Government & State-Owned Enterprises">Government & State-Owned Enterprises</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <InputField
-                                    label="4. Job Title:"
-                                    name="position"
-                                    required
-                                    value={formData.position}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'position'}
-                                    onFocus={() => setFocusedField('position')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-
-                                <InputField
-                                    label="5. Email Address:"
-                                    name="email"
-                                    type="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'email'}
-                                    onFocus={() => setFocusedField('email')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-
-                                <InputField
-                                    label="6. Phone Number:"
-                                    name="phone_number"
-                                    type="tel"
-                                    value={formData.phone_number}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'phone_number'}
-                                    onFocus={() => setFocusedField('phone_number')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-                            </div>
-                        </div>
+                        <ParticipantInformation
+                            formData={formData}
+                            handleChange={handleChange}
+                            focusedField={focusedField}
+                            setFocusedField={setFocusedField}
+                            headingClassName={sectionHeadingFont.className}
+                        />
 
                         <div className="space-y-6 pt-8 border-t border-gray-700/50">
                             <div className="flex items-center gap-3 mb-6">
@@ -503,7 +352,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label={'2. How useful did you find the content presented in the webinar “GRC Unplugged: Smart Assessment, Fast GRC Implementation with Agentic AI”?'}
+                                    label={'2. How useful did you find the content presented in the webinar "AI-Driven Threats, Stronger Governance: Securing Critical Infrastructure in the Financial Ecosystem"?'}
                                     name="material_usefulness"
                                     options={usefulnessOptions}
                                     value={formData.material_usefulness}
@@ -514,19 +363,7 @@ export default function FeedbackForm() {
                                 />
 
                                 <SelectGroup
-                                    label="3. After attending this webinar, how would you rate your understanding of IT GRC?"
-                                    name="understanding_hcrm"
-                                    options={understandingOptions}
-                                    required
-                                    value={formData.understanding_hcrm}
-                                    onChange={handleChange}
-                                    isFocused={focusedField === 'understanding_hcrm'}
-                                    onFocus={() => setFocusedField('understanding_hcrm')}
-                                    onBlur={() => setFocusedField(null)}
-                                />
-
-                                <SelectGroup
-                                    label="4. Would you recommend this Webinar Series to your colleagues?"
+                                    label="3. Would you recommend this Webinar Series to your colleagues?"
                                     name="recommend_colleagues"
                                     options={yesNoOptions}
                                     required
@@ -540,10 +377,11 @@ export default function FeedbackForm() {
                         </div>
 
                         <div className="space-y-3 pt-4 border-t border-gray-700/50">
-                            <label className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
-                                5. Please share your comments, questions, or suggestions about the webinar.
+                            <label htmlFor="comments" className={`block text-sm font-semibold transition-colors duration-200 ${focusedField === 'comments' ? 'text-xynexis-green' : 'text-gray-400'}`}>
+                                4. Please share your comments, questions, or suggestions about the webinar.
                             </label>
                             <textarea
+                                id="comments"
                                 name="comments"
                                 value={formData.comments}
                                 onChange={handleChange}
@@ -559,7 +397,7 @@ export default function FeedbackForm() {
 
                         <div className="pt-0">
                             <SelectGroup
-                                label="6. Would you be interested in having a one-on-one discussion with the Xynexis team to learn more about IT GRC with Agentic AI?"
+                                label="5. Would you be interested in having a one-on-one discussion with the Xynexis team to learn more about AI-driven cyber threats, security governance, and strategies for securing critical infrastructure in the financial ecosystem?"
                                 name="one_on_one_session"
                                 options={yesNoOptions}
                                 value={formData.one_on_one_session}
